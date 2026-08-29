@@ -39,10 +39,12 @@ Every claim row carries provenance. A row without it is invalid.
 | --- | --- | --- |
 | `claim_id` | yes | Unique within the producer, stable across re-imports. Makes import idempotent. |
 | `source_url` | yes | Where the assertion came from. Use a stable identifier if not a URL. |
-| `source_type` | yes | `staff_directory`, `press_release`, `org_website`, `filing`, `manual_research`, `user_correction`, `self_assertion`, `identity_assertion`, `other` |
+| `source_type` | yes | `staff_directory`, `press_release`, `org_website`, `filing`, `manual_research`, `profile_self_report`, `user_correction`, `self_assertion`, `identity_assertion`, `other` |
 | `observed_at` | yes | ISO date the source was observed or published. Drives recency in resolve. |
 | `confidence` | no | Producer's own confidence, `high` / `medium` / `low`. A hint, not a verdict. |
 | `notes` | no | Free text for a human reviewer. Never parsed. |
+
+`profile_self_report` and `self_assertion` are both the person speaking about themselves, and they are deliberately separate. `self_assertion` is a verified user stating their own history inside this product, at a known moment. `profile_self_report` is that same person's assertion observed on a public professional profile — unverified, and last touched whenever they last bothered. Label the source honestly and let resolve decide what each is worth; the distinction is what allows a later, better-sourced claim to supersede seed data rather than merely contradict it.
 
 ---
 
@@ -69,6 +71,9 @@ A person row is **evidence toward identity, not an identity verdict**. The durab
 | `full_name` | yes | As sourced |
 | `known_as` | no | Nickname or alternate form when the source shows one. Materially improves matching. |
 | `public_profile_url` | no | Professional profile page. Weighted evidence, **not** a key, and **not** a contact channel. |
+| `public_profile_id` | no | The platform's own opaque identifier for that profile, where one exists. Send it alongside the URL, never instead of it. |
+
+Where a platform exposes both a vanity URL and an opaque identifier, they are not interchangeable. A vanity slug is chosen by the person and can change at any time; the opaque identifier survives that change. Sending only the vanity form means a later re-run of the same source produces rows that no longer match the earlier ones — the same human arriving as a stranger. Neither is a key ([ADR-0010](../decisions/0010-person-identity-without-pii.md)); the opaque form is simply the more durable evidence.
 
 The more evidence a producer sends, the better resolution gets — but a producer is never required to decide whether two of its rows are the same human. Send both; let resolve cluster them.
 
@@ -94,7 +99,13 @@ The core file. One row asserts that a person participated in an organization.
 
 **Not accepted here:** `function`, `seniority`, or any normalized rank. Those are derived after resolve ([ADR-0002](../decisions/0002-claims-before-interpretation.md)). A producer sending them fails validation.
 
-**A note on sources.** Profile-scraped data describes who *mentions* an organization, not who works there in a crowd-business role, and it arrives full of students, alumni, players, and unrelated employers. It is a source you curate a batch from, not a batch. Organizational staff directories are the better input, because they carry real titles and implied grouping.
+**A note on sources.** Public professional profiles are the expected seeding source, and they are good enough to seed with. The industry already treats a person's own profile as the fact of where they work; a map built from the same material, organized and comparable, is not less accurate than the status quo it improves on.
+
+Two things about profile data are true and neither disqualifies it. It over-reports current tenure, because people update a profile promptly on arrival and slowly on departure — so it is strong evidence of a start and weaker evidence of a continuation. And it is uneven, favouring people who keep a profile current, which skews toward marketing, digital, and newer staff and away from facilities, retail, and long-tenured operations.
+
+Scope the scrape to one organization and curate it, and both are manageable. Scope it broadly and you get an association list rather than a staff list — students, alumni, fans, and unrelated employers — which is a batch nobody can salvage.
+
+Staff directories remain the better input where they exist, carrying official titles and implied grouping. They are a supersedent, not a prerequisite: seed from profiles now, and let directories overwrite that seed as they arrive.
 
 ---
 
@@ -122,12 +133,17 @@ The core file. One row asserts that a person participated in an organization.
 6. **Stable references matter more than pretty ones.** `org_ref` and `person_ref` must mean the same thing across batches.
 7. **One source per row.** If two sources agree, send two rows and let corroboration do its work.
 8. **A title must be a title.** A company name, a university, "Student", or a hedge such as "not specified" is not a title. If the source does not give a role, omit the row rather than filling the field with something else.
+9. **Scope a profile scrape to one organization.** One org per batch is curatable; a broad sweep across many is not.
+10. **A self-described association is not always an affiliation.** Some people list a connection to an organization that is not participation in its work — a Green Bay Packers shareholder is a fan who bought a share, not a member of the front office. Season-ticket holders, alumni, volunteers, and supporters are the same shape. Where the title itself gives this away, drop the row.
+11. **Name fields carry names.** Professional credentials — `MBA`, `CPA`, `JD` — belong nowhere in a surname, because they corrupt the name matching identity resolution depends on. Generational suffixes such as `Jr` are part of the name and stay.
+12. **An automated collection run is provenance, so use it.** Set `observed_at` to the run timestamp rather than today's date, record the collector and run identifier in the manifest so the batch is reproducible, and derive `claim_id` deterministically from that run plus the source's own stable identifier. Re-importing that batch is then idempotent, because the same rows carry the same `claim_id`. A *later* run is different: it observes the same facts again on a new date and legitimately produces new claims, which is corroboration rather than duplication.
+13. **Never collect a contact channel, even when the source offers one.** Validation rejects the batch ([ADR-0004](../decisions/0004-no-pii.md)), so configure the collector not to request those fields in the first place.
 
 ---
 
 ## Open before this can leave draft
 
-- A pilot batch of real data has been imported successfully
+- A pilot batch of real data has been imported successfully — the intended pilot is a curated single-org profile scrape, re-emitted with full provenance
 - `department_raw` handling — Q-01 in [../open-questions.md](../open-questions.md)
 - Whether producers may assert an interval for `reports_to` — Q-03
 - Batch size limits, file encoding, and rejection report format

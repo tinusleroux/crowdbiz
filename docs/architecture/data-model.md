@@ -33,7 +33,7 @@ Deliberately flat. A claim records an observation as presented, not a model of t
 **`claim.affiliation_observation`** — the dominant claim type, carrying person and organization evidence inline:
 
 - provenance: `claim_id`, `batch_id`, `source_url`, `source_type`, `observed_at`, `ingested_at`
-- person evidence: `person_ref`, `full_name`, `known_as`, `public_profile_url`
+- person evidence: `person_ref`, `full_name`, `known_as`, `public_profile_url`, `public_profile_id`
 - organization evidence: `org_ref`, `org_name`
 - the assertion: `raw_title`, `affiliation_type`, `department_raw`
 - time: `start_date`, `end_date`, `as_of`, plus precision markers (see below)

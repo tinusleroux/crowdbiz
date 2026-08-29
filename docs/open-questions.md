@@ -89,3 +89,23 @@ Leaning toward versioned rows in the database referenced by stable slugs, so cod
 
 *Forces an answer:* the first interpretation implementation.
 *Touches:* [architecture/ontology-title.md](architecture/ontology-title.md), [architecture/data-model.md](architecture/data-model.md)
+
+### Q-10 — How does `source_type` weight a claim during resolve?
+
+A single trust score per source type is the obvious approach and probably the wrong one, because authority varies by *which fact* a row asserts rather than by the row. A public profile is our strongest evidence of identity and our weakest of whether something still holds; a staff directory is close to the reverse, strong on official title, participation, and type, weak on identifying a specific human. Ranking them on one scale throws away whichever strength loses.
+
+The likely shape is a per-source profile of weights across a few fact classes — identity, participation, title, currency — with currency decaying faster for self-reported sources than for organizational ones.
+
+Deliberately unresolved. Seeding runs on one source type ([contracts/claim-schema.md](contracts/claim-schema.md)), where relative weighting has nothing to do, and the model cannot be designed honestly against a single source.
+
+*Forces an answer:* the first batch from a second source type that contradicts the seed.
+*Touches:* [architecture/ingest.md](architecture/ingest.md), [contracts/claim-schema.md](contracts/claim-schema.md)
+
+### Q-11 — Does a chart distinguish absence from non-observation?
+
+Seed coverage is uneven by construction: profile-sourced data favours people who keep a profile current, which skews toward marketing and digital and away from facilities, retail, and long-tenured operations. A chart drawn from it looks equally confident everywhere.
+
+An empty function might mean the organization has nobody in it, or that this source never saw them. Those are different facts and the surface currently cannot tell them apart, which matters most for the gap analysis in [product/vision.md](product/vision.md) — "you know 3 of 6" is misleading if the denominator is really "6 that we happened to see."
+
+*Forces an answer:* the first org chart or coverage surface shown to a user.
+*Touches:* [product/vision.md](product/vision.md), [architecture/ontology-title.md](architecture/ontology-title.md)
