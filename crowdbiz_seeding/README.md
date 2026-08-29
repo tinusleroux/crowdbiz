@@ -17,7 +17,11 @@ pnpm dev                     # terminal 2
 
 Open http://localhost:3000.
 
-Do **not** import `packers-front-office-trial.csv` as raw: it has no position start dates.
+## Data
+
+`data/batches/` holds emitted claim batches. They are reproducible from a scrape run and not tracked.
+
+`data/packers-front-office-trial.csv` is the pilot pull the ontology was derived from, kept as reference. Do **not** import it as raw — it carries no position start dates.
 
 Optional replay of Apify dataset `fnlrJrgcXd8xxmbFB` if it is still live:
 
