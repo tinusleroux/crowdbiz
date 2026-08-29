@@ -21,9 +21,10 @@ An ADR with status `Open` is not binding. It records that a decision is being ma
 | [0006](0006-no-role-seat-department-entities.md) | No Role, Job, Seat, or Department entities in v1 | Accepted |
 | [0007](0007-one-ontology-across-org-types.md) | One function and seniority system across all organization types | Accepted |
 | [0008](0008-knows-overlay-separate.md) | KNOWS is a consent-scoped overlay and never defines org structure | Accepted |
-| [0009](0009-stack-and-datastore.md) | Runtime, hosting, and datastore | **Open** |
+| [0009](0009-stack-and-datastore.md) | Postgres is the system of record, in three physically separated zones | Accepted |
 | [0010](0010-person-identity-without-pii.md) | Person identity is a derived cluster over claims, resolved probabilistically | Accepted |
 | [0011](0011-account-to-person-binding.md) | Account-to-person binding — self-claiming and what it entitles | **Open** |
+| [0012](0012-identity-survives-reclustering.md) | Identity survives re-clustering — stable UIDs and identity assertions as claims | Accepted |
 
 ## Writing one
 

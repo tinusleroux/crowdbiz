@@ -42,6 +42,7 @@ docs/
     ontology-core.md          objects, edges, types, rules
     ontology-title.md         function, seniority, structural depth
     ingest.md                 producer boundary; validate -> resolve -> interpret
+    data-model.md             schema sketch (non-binding, changes freely)
   contracts/
     claim-schema.md           the CSV claim contract (draft)
   decisions/

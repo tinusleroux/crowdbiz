@@ -7,7 +7,7 @@ updated: 2026-08-29
 
 Unresolved items that are **not binding on anything**. They exist so that uncertainty is recorded rather than silently resolved by whoever writes code first.
 
-Bigger unresolved things — data model, claim contract, product boundary, stack — are ADRs instead. Two are open now: [ADR-0009](decisions/0009-stack-and-datastore.md) and [ADR-0011](decisions/0011-account-to-person-binding.md).
+Bigger unresolved things — data model, claim contract, product boundary, stack — are ADRs instead. One is open now: [ADR-0011](decisions/0011-account-to-person-binding.md).
 
 Promote an item here to an ADR when it grows teeth. Delete it when it is answered, with the answer landing in a canonical doc or an ADR.
 
@@ -78,3 +78,12 @@ Related but distinct from [ADR-0011](decisions/0011-account-to-person-binding.md
 
 *Forces an answer:* the first in-product correction affordance.
 *Touches:* [architecture/ingest.md](architecture/ingest.md)
+
+### Q-09 — Is the ontology vocabulary data or code?
+
+The function vocabulary and seniority scale must be versioned and explainable ([ontology-title.md](architecture/ontology-title.md)). In code they are fast and type-safe but need a deploy to change; in the database they are editable and naturally versioned but lose compile-time safety.
+
+Leaning toward versioned rows in the database referenced by stable slugs, so code can depend on the slugs while the vocabulary evolves without a migration.
+
+*Forces an answer:* the first interpretation implementation.
+*Touches:* [architecture/ontology-title.md](architecture/ontology-title.md), [architecture/data-model.md](architecture/data-model.md)

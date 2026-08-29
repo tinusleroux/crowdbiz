@@ -1,7 +1,7 @@
 ---
 status: canonical
 updated: 2026-08-29
-decided_by: [0001, 0002, 0006, 0007, 0008, 0010]
+decided_by: [0001, 0002, 0006, 0007, 0008, 0009, 0010, 0012]
 ---
 
 # Glossary
@@ -57,6 +57,12 @@ The vocabulary is exact. Code, schemas, and documents use these words with these
 **self-assertion** — a claim someone makes about themselves. The strongest identity evidence available, and not automatically the strongest evidence about their title. What an account may bind to is open ([ADR-0011](decisions/0011-account-to-person-binding.md)).
 
 **user correction** — a claim submitted by a viewer fixing something on a chart. An ordinary attributed claim, not a privileged edit.
+
+**identity assertion** — a `same_as` or `not_same_as` claim stating that two person references are, or are not, the same human. Usually from a human validator or research agent. Anchors that re-clustering must respect ([ADR-0012](decisions/0012-identity-survives-reclustering.md)).
+
+**redirect** — what a retired person UID becomes after a merge, so prior references still resolve. Retired UIDs are never reused.
+
+**zone** — one of the three physical schema separations: append-only claims, rebuildable derived structure, and consent-scoped overlay ([ADR-0009](decisions/0009-stack-and-datastore.md)).
 
 **interpret** — the ingest stage that derives function and seniority from a resolved affiliation.
 

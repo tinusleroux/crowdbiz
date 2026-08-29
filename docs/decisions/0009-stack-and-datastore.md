@@ -1,74 +1,62 @@
 ---
 id: 0009
-title: Runtime, hosting, and datastore
-status: Open
+title: Postgres is the system of record, in three physically separated zones
+status: Accepted
 date: 2026-08-29
 supersedes: null
 superseded_by: null
+revisit_when: overlay or pathfinding latency stops being acceptable on recursive queries, or the map grows well beyond a few leagues
 ---
 
-# ADR-0009 — Runtime, hosting, and datastore
+# ADR-0009 — Postgres is the system of record, in three physically separated zones
 
 ## Status
 
-`Open` — not binding. Nothing in this repository may assume an answer until this is accepted.
+`Accepted`
 
 ## Context
 
-No code exists yet. The choice that matters most is not the web framework but **where structure lives**, because the core object model is interval-heavy and traversal-heavy ([ADR-0001](0001-core-object-model.md)).
+The product is called a graph, and that has been quietly biasing the storage question toward a graph database. The actual query shapes do not support it.
 
-The workload has an unusual shape:
+An org chart is one organization at one point in time, grouped by function and ordered by seniority — a filtered scan and a sort over a few hundred rows. Depth to apex is a recursive walk two to six levels deep. The overlay is a join against one user's uploaded connections. Even warm paths are shallow, because a third-degree introduction is not warm and nobody will ask for one.
 
-- **Ingest** is batch, write-heavy, and reconciliation-heavy. Claims are matched, split by interval, and resolved against history ([ADR-0002](0002-claims-before-interpretation.md)). This is relational work: constraints, transactions, auditability.
-- **Org chart reads** are bounded traversals within one organization, filtered to a point in time, grouped by `function`. Depth to apex is a short recursive walk, not an open-ended search.
-- **Overlay reads** are per-viewer and genuinely graph-shaped: first and second degree, warm paths across organizations. Volume is bounded by one user's uploaded network, but latency is user-facing.
+The scale is similarly modest. A league is roughly thirty-two organizations at a couple of hundred crowd-business staff each; with vendors and agencies a beachhead is on the order of tens of thousands of persons and low hundreds of thousands of affiliations. Connection edges are the largest table and still small by Postgres standards.
 
-Both extremes are plausible and the failure modes differ. Choosing a specialist graph store early buys traversal power we may not need and costs operational simplicity we certainly need. Choosing relational and discovering that pathfinding is unworkable is a painful migration later.
-
-## Options
-
-### A. Postgres only, recursive CTEs for traversal
-
-Everything relational: temporal claims, resolved affiliations, and reporting edges in tables. Reporting depth and warm paths via recursive queries.
-
-Strong on ingest, conflict resolution, and audit, which is where most of the early work is. Operationally simple, one system to run and back up, easy to reason about correctness. Managed hosting is abundant, and Supabase is already available in this workspace.
-
-Weak if pathfinding grows beyond two or three hops or becomes latency-critical. Recursive CTEs are workable but not pleasant, and query complexity lands in the hardest-to-test layer.
-
-### B. Native graph store as the system of record
-
-Model people, organizations, affiliations, and edges natively. Traversal, pathfinding, and explanation are first-class.
-
-Strong on the overlay and on future intelligence features that walk and cite structure. Weak precisely where the early work is: temporal reconciliation, provenance, constraints, and audit are less natural, and operational maturity is a real cost for a project with no users yet.
-
-### C. Postgres as system of record, derived graph projection for reads
-
-Claims, resolution, and history in Postgres. A projection built for traversal and overlay reads, rebuildable from the source of truth.
-
-Matches the architecture already decided: claims are the record, structure is derived ([ADR-0002](0002-claims-before-interpretation.md)), and a projection can be rebuilt when the ontology version changes. Costs a synchronization path and two systems to operate, which is heavy before there is anything to serve.
-
-### Sequencing note
-
-A and C are not exclusive. Starting at A and adding a projection when overlay latency demands it is a viable path, provided the read layer is written so that traversal is not scattered across the application.
+Meanwhile the work that dominates the early build is reconciliation, constraints, provenance, and audit ([ADR-0002](0002-claims-before-interpretation.md), [ADR-0010](0010-person-identity-without-pii.md)). That is relational work, and it is where a specialist traversal engine helps least while costing the most operationally.
 
 ## Decision
 
-Not yet made.
+**Postgres is the system of record. No graph database.**
 
-To accept this ADR, answer: which store holds the system of record, whether a separate read projection exists at launch, the hosting target, and the application runtime.
+The database is organized into **three physically separated zones**, because two of the decisions already made are otherwise enforced only by everyone remembering them:
+
+- **Claims** — append-only. Never updated, never deleted. Corrections are new rows. This is the audit substrate.
+- **Derived** — resolved persons, affiliations, structure, and interpretation. Every row traces to the claims supporting it.
+- **Overlay** — consent-scoped `KNOWS` data, in its own namespace with its own access path.
+
+**The derived zone must be droppable and rebuildable from claims alone.** This is [ADR-0002](0002-claims-before-interpretation.md) made operational, and it is a test that runs in CI rather than an aspiration, because it is precisely the property that quietly stops being true.
+
+**Structure queries must not be able to see the overlay.** Chart building runs under an access path with no reach into `KNOWS`, so [ADR-0008](0008-knows-overlay-separate.md) holds by construction.
+
+**Traversal lives behind a narrow read layer**, not scattered through application code, so that adding a derived read projection later is a contained change rather than an excavation.
+
+**Ingest is a batch worker, not a request handler.** Resolve may run for minutes over a large batch; it must not live anywhere with a request timeout.
+
+This ADR deliberately does not choose a web framework or fix any table shapes. The framework is cheap to reverse and does not need a decision record; table shapes are interior and belong in code, sketched non-bindingly in [architecture/data-model.md](../architecture/data-model.md). A managed Postgres provider is expected — Supabase is the likely default given it also supplies auth that [ADR-0011](0011-account-to-person-binding.md) will need — with the constraint that the data layer stays portable Postgres rather than coupling to provider-specific query interfaces.
 
 ## Consequences
 
-Until this is accepted:
-
-- No schema, migration, ORM, or client library may be committed.
-- `AGENTS.md` has no build or test commands.
-- [contracts/claim-schema.md](../contracts/claim-schema.md) stays storage-neutral. It describes a file format, not a table.
+- One system to run, back up, and reason about, with transactions and constraints where the hard work actually is.
+- Recursive CTEs carry depth and pathfinding. They are workable rather than pleasant, which is the price of not operating a second datastore.
+- The zone separation is real schema and real roles, so it costs setup effort that a single flat schema would not.
+- Rebuildability constrains design permanently: nothing may live only in the derived zone.
+- If the overlay outgrows recursive queries, the escape hatch is a derived read projection behind the existing read layer — not a migration.
 
 ## Affects
 
+- [architecture/data-model.md](../architecture/data-model.md)
+- [architecture/ingest.md](../architecture/ingest.md)
 - [../../AGENTS.md](../../AGENTS.md)
-- [contracts/claim-schema.md](../contracts/claim-schema.md)
 
 ## Source
 

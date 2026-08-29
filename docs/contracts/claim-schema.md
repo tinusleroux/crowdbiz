@@ -39,7 +39,7 @@ Every claim row carries provenance. A row without it is invalid.
 | --- | --- | --- |
 | `claim_id` | yes | Unique within the producer, stable across re-imports. Makes import idempotent. |
 | `source_url` | yes | Where the assertion came from. Use a stable identifier if not a URL. |
-| `source_type` | yes | `staff_directory`, `press_release`, `org_website`, `filing`, `manual_research`, `user_correction`, `self_assertion`, `other` |
+| `source_type` | yes | `staff_directory`, `press_release`, `org_website`, `filing`, `manual_research`, `user_correction`, `self_assertion`, `identity_assertion`, `other` |
 | `observed_at` | yes | ISO date the source was observed or published. Drives recency in resolve. |
 | `confidence` | no | Producer's own confidence, `high` / `medium` / `low`. A hint, not a verdict. |
 | `notes` | no | Free text for a human reviewer. Never parsed. |
@@ -86,7 +86,7 @@ The core file. One row asserts that a person participated in an organization.
 | `org_ref` | yes | Resolves against `organizations.csv` |
 | `raw_title` | yes | Exactly as sourced. Never normalized by the producer. |
 | `affiliation_type` | yes | `employed`, `contracted`, `advising`, `board`, `ownership`, `other` ([ontology-core.md](../architecture/ontology-core.md)) |
-| `start_date` | no | ISO date or year when known |
+| `start_date` | no | ISO date, or year or month alone. Send the precision the source gave — do not pad a year to January 1st. |
 | `end_date` | no | Omit for ongoing. Absence means unknown, not current. |
 | `as_of` | yes | The date this participation was observed to hold. Required when start and end are unknown, which is the common case. |
 | `reports_to_person_ref` | no | Observed reporting only. Never inferred by the producer. |

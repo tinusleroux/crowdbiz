@@ -6,7 +6,7 @@ The distinguishing capability: **credible org charts of teams and vendors, built
 
 ## Status
 
-Documentation only. No code yet, and no stack chosen — see [ADR-0009](docs/decisions/0009-stack-and-datastore.md).
+Documentation only, no code yet. The datastore is decided — Postgres in three zones, with the derived structure rebuildable from an append-only claim log ([ADR-0009](docs/decisions/0009-stack-and-datastore.md)).
 
 The documents in `docs/` are written to be binding, not descriptive. They constrain the system before it is built.
 

@@ -30,4 +30,4 @@ Settled. Do not relitigate inside a feature — open an ADR instead.
 
 ## Current state
 
-Documentation only. No stack chosen — do not add schemas, migrations, or dependencies until [ADR-0009](mdc:docs/decisions/0009-stack-and-datastore.md) is accepted.
+Documentation only, no code yet. Postgres in three zones — claims append-only, derived rebuildable from claims, overlay separate ([ADR-0009](mdc:docs/decisions/0009-stack-and-datastore.md)). Schema sketch in [data-model.md](mdc:docs/architecture/data-model.md) is non-binding and changes freely.

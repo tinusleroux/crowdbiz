@@ -1,7 +1,7 @@
 ---
 status: canonical
 updated: 2026-08-29
-decided_by: [0002, 0003, 0004, 0010, 0011]
+decided_by: [0002, 0003, 0004, 0009, 0010, 0011, 0012]
 ---
 
 # Ingest — the producer boundary and the claim pipeline
@@ -66,6 +66,10 @@ Reconcile the claim against what is already known. This is where identity and hi
 
 **Identity.** A Person is a derived cluster over immutable claims, keyed by an internal UID that we assign. Producer references and public profile URLs are weighted evidence, never authority. Clustering is probabilistic — over name forms, organization, interval adjacency, affiliation sequence, profile URL, corroboration, and source-type weight — and confidence bands are per-surface, since a wrong grouping on a chart costs less than a wrong warm path to a named human. Because clustering is a projection, a merge is non-destructive and a better matcher re-derives identity retroactively. Full rules in [ADR-0010](../decisions/0010-person-identity-without-pii.md).
 
+Clustering reads **claims**, never resolved affiliations, which keeps the derivation one-directional: claims feed identity, identity feeds resolved structure. A person's employment history is therefore the cluster's own claim set — the fingerprint exists by construction, with nothing to denormalize.
+
+Identity judgments from human validators and research agents arrive as `same_as` and `not_same_as` claims, and act as anchors that re-clustering must respect. Person UIDs persist across re-runs, with redirects for retired UIDs ([ADR-0012](../decisions/0012-identity-survives-reclustering.md)).
+
 Outcomes for an affiliation claim:
 
 - **Corroborate** — the same participation, now with a second source; confidence rises
@@ -102,4 +106,8 @@ The extractor never writes "Partnerships, VP-band" into the graph. It reports wh
 - Re-importing the same batch is idempotent.
 - Derived fields carry an ontology version so old structure stays interpretable.
 - Person identity is derived, versioned, and re-derivable — never destructively merged.
+- Person UIDs survive re-clustering; retired UIDs redirect rather than disappear.
+- The derived zone can be dropped and rebuilt from claims alone ([ADR-0009](../decisions/0009-stack-and-datastore.md)).
 - Nothing enters the graph except through this pipeline.
+
+Storage shapes are sketched in [data-model.md](data-model.md), which is non-binding.

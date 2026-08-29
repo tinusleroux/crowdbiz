@@ -2,7 +2,7 @@
 
 CrowdBiz Graph is a living map of the crowd-business side of professional sports: who sits where, how organizations are structured, and how a personal network reaches into them.
 
-**Current state: documentation only. No code, no stack chosen.** See [ADR-0009](docs/decisions/0009-stack-and-datastore.md).
+**Current state: documentation only, no code yet.** The datastore is decided — Postgres in three zones ([ADR-0009](docs/decisions/0009-stack-and-datastore.md)) — with the schema sketched non-bindingly in [docs/architecture/data-model.md](docs/architecture/data-model.md). The web framework is deliberately not decided, because it is cheap to reverse.
 
 ---
 
@@ -40,6 +40,8 @@ These are settled. Do not relitigate them inside a feature; open an ADR instead.
 - **No `Role`, `Job`, `Seat`, or `Department` entities.** `function` on an affiliation is the department-like vocabulary; seats and department nodes are projections. ([ADR-0006](docs/decisions/0006-no-role-seat-department-entities.md))
 - **`KNOWS` never defines org structure.** The social overlay is consent-scoped and separate. ([ADR-0008](docs/decisions/0008-knows-overlay-separate.md))
 - **Reporting hangs on affiliations, not people.** ([ADR-0001](docs/decisions/0001-core-object-model.md))
+- **The derived zone must rebuild from claims alone.** Nothing may live only in derived tables. ([ADR-0009](docs/decisions/0009-stack-and-datastore.md))
+- **Person UIDs are stable across re-clustering**, and human identity judgments are claims, not one-off merges. ([ADR-0012](docs/decisions/0012-identity-survives-reclustering.md))
 
 ---
 
@@ -91,8 +93,8 @@ If an ADR is blocking the obviously right solution, raise it. Do not route aroun
 
 ---
 
-## Building things (once a stack exists)
+## Building things
 
-There is no build, test, or run command yet. When [ADR-0009](docs/decisions/0009-stack-and-datastore.md) is accepted, add commands here and keep this section current.
+No code exists yet, so there are no build, test, or run commands. Add them here as soon as there are, and keep this section current.
 
-Until then, changes to this repo are documentation changes.
+When code does start, two tests matter more than the rest: the derived zone rebuilds from claims alone, and a batch re-imports idempotently.
