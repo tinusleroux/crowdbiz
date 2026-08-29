@@ -107,6 +107,8 @@ Scope the scrape to one organization and curate it, and both are manageable. Sco
 
 Staff directories remain the better input where they exist, carrying official titles and implied grouping. They are a supersedent, not a prerequisite: seed from profiles now, and let directories overwrite that seed as they arrive.
 
+[producer-profile-scrape.md](producer-profile-scrape.md) works this through for a single-organization scrape — collection scope, the curation pass, and field-by-field mapping.
+
 ---
 
 ## relationships.csv

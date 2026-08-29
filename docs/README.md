@@ -45,6 +45,7 @@ docs/
     data-model.md             schema sketch (non-binding, changes freely)
   contracts/
     claim-schema.md           the CSV claim contract (draft)
+    producer-profile-scrape.md  how a seed batch satisfies it (draft)
   decisions/
     README.md                 index of every ADR
     _template.md              ADR template
