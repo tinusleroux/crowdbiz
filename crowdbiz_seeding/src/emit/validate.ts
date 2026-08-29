@@ -15,7 +15,7 @@ const AFF_REQUIRED = [
 
 const FORBIDDEN_SEMANTIC = ["function", "seniority"];
 
-/** claim-schema.md. An unlisted value silently loses its weight at resolve. */
+/** An unlisted value silently loses its weight at resolve. */
 const SOURCE_TYPES = new Set([
   "staff_directory",
   "press_release",
