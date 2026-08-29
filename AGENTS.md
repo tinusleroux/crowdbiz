@@ -88,6 +88,20 @@ If an ADR is blocking the obviously right solution, raise it. Do not route aroun
 
 ---
 
+## Before you delete or rewrite in bulk
+
+**A statement of intent is not an instruction.** "I think I'm going to drop the ADRs", "we could merge these", "should this move?" — that is someone thinking out loud. Reflect it back and wait. Only an explicit directive authorizes the act, and the gap between the two is where the damage happens.
+
+**Deletion is not an ordinary edit.** Before removing a file, a directory, or a section someone else wrote, say what is about to go and get a yes. Asking costs one message. Being wrong costs someone their work.
+
+**Bulk edits need a stated blast radius.** Any find-and-replace spanning more than one file names its path filter first and excludes `node_modules/`, `.next/`, and `drizzle/meta/`. A regex that rewrites vendored files is a bug, not a side effect.
+
+**Never strip text and leave the sentence standing.** Removing a citation means rewriting the prose around it. `It is permitted here by , which also fixes` is worse than whatever you were tidying.
+
+Git is the backstop, not the plan. Confirm `git status` is clean before a destructive step so the undo exists — but recoverability is not licence to skip the question.
+
+---
+
 ## Editing documents
 
 - Every doc carries frontmatter: `status`, `updated`, and (canonical docs) `decided_by`.
