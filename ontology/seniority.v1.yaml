@@ -1,0 +1,101 @@
+# CrowdBiz seniority scale
+#
+# An ordered scale for stacking affiliations, driving layout, and comparing
+# rank across organizations (ontology-title.md, ADR-0014).
+#
+# Orientation: LOWER rank is MORE senior. Leaders sit at the centre or top.
+#
+# The slug is the stable reference. `rank` is ordering only — compare it,
+# do not do arithmetic on it or persist it as the identifier, so that a band
+# can be inserted later without rewriting stored structure.
+
+version: 1
+status: draft
+updated: 2026-08-29
+orientation: lower_is_more_senior
+
+bands:
+  - rank: 1
+    slug: chief
+    label: Chief
+    typical: Chief executive, president, owner-operator, C-suite
+    note: >
+      A C-level title sets this band but does not set function — that resolves
+      by what the person oversees.
+
+  - rank: 2
+    slug: executive
+    label: Executive
+    typical: Executive vice president, senior vice president, vice president
+
+  - rank: 3
+    slug: senior_leader
+    label: Senior Leader
+    typical: Senior director, executive director, head of, general counsel
+
+  - rank: 4
+    slug: leader
+    label: Leader
+    typical: Director
+
+  - rank: 5
+    slug: associate_leader
+    label: Associate Leader
+    typical: Assistant director, associate director, deputy director
+    note: >
+      A populated band in practice, not a rounding error — clubs use assistant
+      director as a real tier between director and manager.
+
+  - rank: 6
+    slug: manager
+    label: Manager
+    typical: Manager, controller, producer
+
+  - rank: 7
+    slug: senior_contributor
+    label: Senior Contributor
+    typical: Assistant manager, supervisor, team lead, senior coordinator, senior analyst
+
+  - rank: 8
+    slug: contributor
+    label: Contributor
+    typical: Coordinator, analyst, specialist, associate, counsel, strategist
+
+  - rank: 9
+    slug: support
+    label: Support
+    typical: Assistant, staff, ambassador, attendant, operator, performer, gameday and seasonal
+
+  - rank: null
+    slug: unknown
+    label: Unknown
+    typical: No rank marker in the title
+    note: >
+      A string naming only a department or an association — "Corporate
+      Partnerships", "Buffalo Bills Ticket Office" — carries no rank. Unknown
+      is correct; do not infer a band from function alone.
+
+# Modifiers adjust a band. They never create one and never multiply functions.
+modifiers:
+  senior:
+    terms: [senior, sr, executive, principal, head, chief]
+    delta: -1
+  junior:
+    terms: [assistant, associate, deputy, junior, jr]
+    delta: +1
+
+# Worked examples, verified against the derivation corpus.
+examples:
+  - { title: "Chief Financial Officer",            band: chief }
+  - { title: "Vice President of Communications",   band: executive }
+  - { title: "General Counsel",                    band: senior_leader }
+  - { title: "Director of Retail",                 band: leader }
+  - { title: "Assistant Director of Communications", band: associate_leader }
+  - { title: "Associate General Counsel",          band: leader,
+      why: "senior_leader base, moved down one by the associate modifier" }
+  - { title: "Accounting Manager",                 band: manager }
+  - { title: "Assistant Accounting Manager",       band: senior_contributor }
+  - { title: "Senior Premium Seating Coordinator", band: senior_contributor }
+  - { title: "Premium Seating Coordinator",        band: contributor }
+  - { title: "Tundraline Performer",               band: support }
+  - { title: "Corporate Partnerships",             band: unknown }

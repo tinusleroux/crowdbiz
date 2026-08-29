@@ -47,21 +47,24 @@ Structural depth needs a defined top. Candidates differ by organization type: co
 *Forces an answer:* the first depth metric.
 *Touches:* [architecture/ontology-title.md](architecture/ontology-title.md)
 
-### Q-05 — What is the v1 function vocabulary?
+### Q-05 — What is the v1 function vocabulary? — **answered**
 
-The actual enumerated list of crowd-business functions. Beachhead depth beats a global HR taxonomy ([ADR-0007](decisions/0007-one-ontology-across-org-types.md)), and it must describe a vendor as well as a team.
+Nineteen in-scope crowd-business domains plus `on_field` and `unknown`, in [../ontology/functions.v1.yaml](../ontology/functions.v1.yaml), derived from real titles at one club and stress-tested against clubs not used in the derivation.
 
-It also needs the out-of-scope categories from [ADR-0013](decisions/0013-on-field-roles-out-of-scope.md), which are classified but never displayed.
+One thing stayed open and moved to Q-12: the vocabulary has only met team titles, and [ADR-0007](decisions/0007-one-ontology-across-org-types.md) claims it should describe a vendor and an agency too.
 
-*Forces an answer:* the first interpretation pass over real titles.
-*Touches:* [architecture/ontology-title.md](architecture/ontology-title.md), [glossary.md](glossary.md)
+### Q-06 — What is the seniority scale, and which way does it point? — **answered**
 
-### Q-06 — What is the seniority scale, and which way does it point?
+Nine bands, lower meaning more senior, modifiers adjusting rather than enumerating. Promoted to [ADR-0014](decisions/0014-seniority-scale.md) because orientation and cardinality leak into every surface and are expensive to change once assumed.
 
-Cardinality and orientation. Orientation must be picked once and held product-wide; the principle already leans toward lower number meaning more senior if leaders render at the center or top.
+### Q-12 — Does the function vocabulary hold for vendors and agencies?
 
-*Forces an answer:* the first chart layout.
-*Touches:* [architecture/ontology-title.md](architecture/ontology-title.md)
+[ADR-0007](decisions/0007-one-ontology-across-org-types.md) commits to one vocabulary across organization types, but v1 was derived entirely from club front offices. An agency has account management, creative, and strategy; a vendor has product, delivery, and client services. None of those map cleanly onto `partnerships` or `content_media`, and forcing them would quietly fork the ontology by stretching labels past their definitions.
+
+The honest position is that the claim in ADR-0007 is untested rather than wrong. If vendor titles cannot sit on this vocabulary, that ADR is what needs revisiting — not the vocabulary.
+
+*Forces an answer:* the first batch from a vendor or agency.
+*Touches:* [architecture/ontology-title.md](architecture/ontology-title.md), [../ontology/functions.v1.yaml](../ontology/functions.v1.yaml)
 
 ### Q-07 — Which affiliation types appear on a default org chart?
 

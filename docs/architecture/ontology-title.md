@@ -1,7 +1,7 @@
 ---
 status: canonical
 updated: 2026-08-29
-decided_by: [0001, 0002, 0004, 0006, 0007, 0013]
+decided_by: [0001, 0002, 0004, 0006, 0007, 0013, 0014]
 ---
 
 # Title ontology — function, seniority, and structural depth
@@ -130,6 +130,23 @@ Wherever function or seniority drives layout or "who matters," the product can s
 
 ---
 
+## The v1 vocabularies
+
+The principles above are binding. The enumerations that satisfy them are versioned data, not prose in this document:
+
+- **Function** — [../../ontology/functions.v1.yaml](../../ontology/functions.v1.yaml). Nineteen in-scope crowd-business domains, plus `on_field` as the explicit out-of-scope category ([ADR-0013](../decisions/0013-on-field-roles-out-of-scope.md)) and `unknown` for genuine ambiguity.
+- **Seniority** — [../../ontology/seniority.v1.yaml](../../ontology/seniority.v1.yaml). Nine ordered bands, lower meaning more senior, with modifiers adjusting a band rather than creating one ([ADR-0014](../decisions/0014-seniority-scale.md)).
+
+Both were derived from 136 real front-office titles at one NFL club and stress-tested against 490 titles from clubs that were not used to build them. Three things that survived contact with the held-out data are worth keeping in view:
+
+**Purpose beats vocabulary when classifying scope.** "Football Outreach Coordinator" is community work; "Director of Football Administration" is not. Any rule keyed on the word rather than the purpose gets both wrong, in opposite directions.
+
+**Modifiers must adjust, not enumerate.** Treating "Assistant Director" as its own entry rather than as `director` shifted one band doubles the vocabulary and still misses the next modifier. This is principle 8 stated operationally.
+
+**Coverage gaps follow the source, not the ontology.** The derivation corpus contained almost no building trades or food-service line roles, because profile-sourced data under-represents them — not because clubs lack them. The held-out data supplied both. Expect the vocabulary to look complete in exactly the places the seed source is strong, which is the same skew recorded as Q-11.
+
+---
+
 ## Structural depth as a second lens
 
 Once `REPORTS_TO` structure exists among affiliations, distance from an organization's apex is a valuable internal metric.
@@ -151,7 +168,6 @@ What counts as the apex per organization type is unresolved — see [../open-que
 ## Deliberately not fixed here
 
 - Regex versus embeddings versus LLM versus human review
-- The exact function enumeration or scale cardinality
 - Tables, graph labels, or API shapes
 - How reporting edges are obtained or path length computed
 - The apex definition per organization type

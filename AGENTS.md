@@ -2,7 +2,9 @@
 
 CrowdBiz Graph is a living map of the crowd-business side of professional sports: who sits where, how organizations are structured, and how a personal network reaches into them.
 
-**Current state: documentation only, no code yet.** The datastore is decided — Postgres in three zones ([ADR-0009](docs/decisions/0009-stack-and-datastore.md)) — with the schema sketched non-bindingly in [docs/architecture/data-model.md](docs/architecture/data-model.md). The web framework is deliberately not decided, because it is cheap to reverse.
+**Current state: documentation and vocabulary, no application code yet.** The datastore is decided — Postgres in three zones ([ADR-0009](docs/decisions/0009-stack-and-datastore.md)) — with the schema sketched non-bindingly in [docs/architecture/data-model.md](docs/architecture/data-model.md). The web framework is deliberately not decided, because it is cheap to reverse.
+
+The function and seniority vocabularies live in [ontology/](ontology/) as versioned data. They are not code and must not be reimplemented as constants — read them.
 
 ---
 

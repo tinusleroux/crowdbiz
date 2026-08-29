@@ -26,6 +26,7 @@ An ADR with status `Open` is not binding. It records that a decision is being ma
 | [0011](0011-account-to-person-binding.md) | Account-to-person binding — self-claiming and what it entitles | **Open** |
 | [0012](0012-identity-survives-reclustering.md) | Identity survives re-clustering — stable UIDs and identity assertions as claims | Accepted |
 | [0013](0013-on-field-roles-out-of-scope.md) | On-field roles are out of scope — classified, not rejected | Accepted |
+| [0014](0014-seniority-scale.md) | Seniority is a nine-band ordered scale where lower is more senior | Accepted |
 
 ## Writing one
 

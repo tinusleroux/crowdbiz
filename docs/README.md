@@ -51,6 +51,7 @@ docs/
     _template.md              ADR template
     NNNN-*.md                 individual ADRs
   brainstorm/                 frozen pre-decision drafts
+ontology/                     versioned function and seniority vocabularies (data)
 .cursor/rules/                thin auto-attached rules that point back here
 ```
 

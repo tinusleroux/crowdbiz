@@ -1,0 +1,215 @@
+# CrowdBiz function vocabulary
+#
+# The controlled set of crowd-business domains an affiliation can belong to
+# (ontology-title.md). Derived from 136 real front-office titles at one NFL
+# club and stress-tested against 490 titles from clubs not used to build it.
+#
+# Slugs are the stable reference. Rename a label freely; never reuse a slug
+# for a different meaning, and never delete one that derived rows point at.
+#
+# Matching method is deliberately not specified here — regex, embeddings,
+# model, or human review are all permitted, and none of them is the ontology.
+
+version: 1
+status: draft
+updated: 2026-08-29
+
+functions:
+  - slug: partnerships
+    label: Partnerships
+    scope: in
+    definition: >
+      Selling and servicing commercial relationships with other organizations —
+      corporate partnerships, sponsorship, activation, fulfilment, and the sale
+      of media and broadcast inventory.
+    boundary: >
+      Selling to organizations, not to fans. Selling seats to a company is
+      ticketing; selling a company signage and rights is partnerships.
+
+  - slug: ticketing
+    label: Ticketing and Premium
+    scope: in
+    definition: >
+      Selling and servicing admission to fans and companies — general ticketing,
+      season memberships, box office, and premium seating, suites, and
+      hospitality inventory.
+    boundary: >
+      Owns the transaction and the account relationship. Service delivered
+      on-site on event day is guest_services.
+
+  - slug: guest_services
+    label: Guest Services
+    scope: in
+    definition: >
+      On-site service to people attending — guest experience, ushers, greeters,
+      ambassadors, suite attendants, concierge, and customer service.
+    boundary: >
+      The service, not the show. Producing what happens on the field surface or
+      the videoboard is fan_experience.
+
+  - slug: fan_experience
+    label: Fan Experience and Events
+    scope: in
+    definition: >
+      Producing the event and the attractions around it — game presentation,
+      entertainment, in-game hosting, performers and mascots, event booking and
+      operations, tours, halls of fame, and destination programming.
+    boundary: >
+      Fan-facing production and programming. Marketing campaigns that sell the
+      event are marketing; the venue's physical operation is venue_operations.
+
+  - slug: marketing
+    label: Marketing and Brand
+    scope: in
+    definition: >
+      Brand stewardship, campaigns, advertising, promotions, and demand
+      generation across audiences.
+    boundary: >
+      Owns the message and the campaign. Producing the assets is content_media;
+      earned and reputational work is communications.
+
+  - slug: content_media
+    label: Content and Media Production
+    scope: in
+    definition: >
+      Making and distributing owned media — editorial content, social channels,
+      digital platforms and apps as publishing surfaces, video and broadcast
+      production, photography, design, and creative services.
+    boundary: >
+      Game-film and coaching video is on_field. "Director of Video" is
+      genuinely ambiguous and resolves to unknown without further signal.
+
+  - slug: communications
+    label: Communications and Public Affairs
+    scope: in
+    definition: >
+      Reputation and external relations — public relations, media relations,
+      press operations, public affairs, and government relations.
+
+  - slug: community
+    label: Community and Foundation
+    scope: in
+    definition: >
+      Community relations and impact, charitable foundation work, corporate and
+      foundation giving, youth and grassroots programming, and alumni relations.
+    boundary: >
+      Community work often carries the sport's name — "Football Outreach" is
+      community, not on_field. Test purpose, not vocabulary.
+
+  - slug: retail
+    label: Retail and Merchandise
+    scope: in
+    definition: >
+      Merchandise and licensed product — team stores, retail operations, store
+      logistics, and e-commerce.
+
+  - slug: food_beverage
+    label: Food and Beverage
+    scope: in
+    definition: >
+      Concessions, catering, culinary and restaurant operations, and the service
+      roles that deliver them.
+    boundary: >
+      Thin in the derivation corpus because profile scrapes under-represent
+      hourly service staff. Held-out data confirmed the function is real.
+
+  - slug: venue_operations
+    label: Venue Operations
+    scope: in
+    definition: >
+      Running the physical venue — stadium services and operations, facilities
+      and building trades, grounds, engineering and mechanical systems,
+      housekeeping, parking, transport, security, and safety.
+    boundary: >
+      Building and rebuilding is real_estate_development; running what exists is
+      venue_operations.
+
+  - slug: real_estate_development
+    label: Real Estate and Development
+    scope: in
+    definition: >
+      Property and capital projects — stadium development and construction,
+      mixed-use district development, capital programmes, and design and
+      construction management.
+
+  - slug: analytics
+    label: Analytics and Insight
+    scope: in
+    definition: >
+      Business intelligence, data engineering and warehousing, fan and consumer
+      insight, CRM analysis, and market research.
+    boundary: >
+      Business-side analysis only. Player and game analysis is on_field.
+
+  - slug: technology
+    label: Technology
+    scope: in
+    definition: >
+      Information technology, applications and software development, digital
+      platform engineering, networks and infrastructure, audiovisual and
+      broadcast engineering, information security, and technical project
+      delivery.
+
+  - slug: finance
+    label: Finance
+    scope: in
+    definition: >
+      Accounting, financial planning and control, payroll, treasury, audit,
+      procurement, and risk and insurance.
+
+  - slug: legal
+    label: Legal and Compliance
+    scope: in
+    definition: >
+      Counsel, contracting, regulatory compliance, and risk of a legal nature.
+
+  - slug: people
+    label: People and Culture
+    scope: in
+    definition: >
+      Human resources, talent acquisition, benefits and compensation, learning,
+      and employee experience.
+
+  - slug: administration
+    label: Administration
+    scope: in
+    definition: >
+      Executive and organizational support — chief of staff, executive
+      assistance, office and team administration, and business operations
+      support that is not attached to another function.
+
+  - slug: executive
+    label: Executive Leadership
+    scope: in
+    definition: >
+      Apex leadership whose remit is the whole organization rather than one
+      domain — chief executive, president, chief operating officer, chief
+      strategy officer.
+    boundary: >
+      A reserve, not a default. A C-level affiliation lands in the function it
+      oversees wherever that is knowable: a CFO is finance, a CRO is
+      partnerships. Only genuinely cross-domain leadership belongs here.
+
+  - slug: on_field
+    label: On-field (out of scope)
+    scope: out
+    definition: >
+      Roles that exist to run the on-field competitive product — playing,
+      coaching, scouting, player personnel, athletic training and medical,
+      performance science and nutrition, sports psychology, equipment, and
+      game-film video.
+    boundary: >
+      Classified like any other function and excluded by product surfaces
+      afterwards; never rejected at ingest. Scope attaches to the affiliation,
+      never to the person (ADR-0013).
+
+  - slug: unknown
+    label: Unknown
+    scope: unresolved
+    definition: >
+      The title is real but its function cannot be determined with confidence,
+      or it sits on the scope boundary — player engagement, alumni-facing work,
+      "Director of Video", a bare rank such as "Vice President" with no domain.
+    boundary: >
+      An honest answer, not a failure state. Preferred over a confident wrong
+      function wherever oversight or domain is unclear.
