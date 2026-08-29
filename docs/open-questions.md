@@ -49,22 +49,22 @@ Structural depth needs a defined top. Candidates differ by organization type: co
 
 ### Q-05 — What is the v1 function vocabulary? — **answered**
 
-Nineteen in-scope crowd-business domains plus `on_field` and `unknown`, in [../ontology/functions.v1.yaml](../ontology/functions.v1.yaml), derived from real titles at one club and stress-tested against clubs not used in the derivation.
-
-One thing stayed open and moved to Q-12: the vocabulary has only met team titles, and [ADR-0007](decisions/0007-one-ontology-across-org-types.md) claims it should describe a vendor and an agency too.
+Twenty-two in-scope crowd-business domains plus `on_field` and `unknown`, now at [../ontology/functions.v2.yaml](../ontology/functions.v2.yaml). Derived from real titles at one club, stress-tested against clubs not used in the derivation, then extended in v2 when a vendor batch broke it — see Q-12.
 
 ### Q-06 — What is the seniority scale, and which way does it point? — **answered**
 
 Nine bands, lower meaning more senior, modifiers adjusting rather than enumerating. Promoted to [ADR-0014](decisions/0014-seniority-scale.md) because orientation and cardinality leak into every surface and are expensive to change once assumed.
 
-### Q-12 — Does the function vocabulary hold for vendors and agencies?
+### Q-12 — Does the function vocabulary hold for vendors and agencies? — **partly; v2 fixes the vendor half**
 
-[ADR-0007](decisions/0007-one-ontology-across-org-types.md) commits to one vocabulary across organization types, but v1 was derived entirely from club front offices. An agency has account management, creative, and strategy; a vendor has product, delivery, and client services. None of those map cleanly onto `partnerships` or `content_media`, and forcing them would quietly fork the ontology by stretching labels past their definitions.
+No, as written. A 29-title software vendor batch left 48% of titles unclassified under v1, and the classifications it did make included "Senior Account Manager" under `finance`, matched on the word "account" — a salesperson drawn into the finance column of an org chart, which is worse than a gap because it looks like an answer.
 
-The honest position is that the claim in ADR-0007 is untested rather than wrong. If vendor titles cannot sit on this vocabulary, that ADR is what needs revisiting — not the vocabulary.
+[ADR-0007](decisions/0007-one-ontology-across-org-types.md) survives, because the fix was to complete the shared vocabulary rather than fork it. [../ontology/functions.v2.yaml](../ontology/functions.v2.yaml) adds `product`, `client_success`, and `professional_services`, and widens `partnerships` from sponsorship to business-to-business selling generally. The vendor corpus resolves fully, and no title in the earlier corpora lost a function it already had.
 
-*Forces an answer:* the first batch from a vendor or agency.
-*Touches:* [architecture/ontology-title.md](architecture/ontology-title.md), [../ontology/functions.v1.yaml](../ontology/functions.v1.yaml)
+**Agencies remain untested.** Account planning, creative strategy, and media buying have not been seen, and `client_success` was drawn from a software vendor's account management, which may not be the same job. Expect one more round.
+
+*Forces an answer:* the first batch from an agency.
+*Touches:* [architecture/ontology-title.md](architecture/ontology-title.md), [../ontology/functions.v2.yaml](../ontology/functions.v2.yaml)
 
 ### Q-07 — Which affiliation types appear on a default org chart?
 

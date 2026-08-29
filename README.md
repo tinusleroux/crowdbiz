@@ -20,4 +20,4 @@ The documents in `docs/` are written to be binding, not descriptive. They constr
 
 ## Related projects
 
-Data collection lives elsewhere. This repository defines the claim contract and ingests batches; it does not scrape, crawl, or curate. See [ADR-0003](docs/decisions/0003-collection-outside-this-repo.md) and [docs/contracts/claim-schema.md](docs/contracts/claim-schema.md).
+This repository owns the claim contract, the ingest pipeline, the graph, the product — and, since [ADR-0015](docs/decisions/0015-producers-live-here.md), the producers that feed it. Collection is permitted here, but nothing reaches the claim zone except validated, fully-provenanced claims. See [docs/contracts/claim-schema.md](docs/contracts/claim-schema.md).

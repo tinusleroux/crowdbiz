@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:16-alpine
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: crowdbiz
+      POSTGRES_PASSWORD: crowdbiz
+      POSTGRES_DB: crowdbiz_seed
+    volumes:
+      - crowdbiz_seed_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U crowdbiz -d crowdbiz_seed"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  crowdbiz_seed_pg:

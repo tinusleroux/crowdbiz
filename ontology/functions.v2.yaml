@@ -1,0 +1,307 @@
+# CrowdBiz function vocabulary
+#
+# The controlled set of crowd-business domains an affiliation can belong to
+# (ontology-title.md).
+#
+# Slugs are the stable reference. Rename a label freely; never reuse a slug
+# for a different meaning, and never delete one that derived rows point at.
+#
+# Matching method is deliberately not specified here — regex, embeddings,
+# model, or human review are all permitted, and none of them is the ontology.
+#
+# v2 answers Q-12: v1 was derived only from club front offices and did not hold
+# for a vendor. Against a 29-title software vendor it left 48% unclassified, and
+# worse, filed "Senior Account Manager" under finance on the word "account" —
+# a salesperson placed in the finance department of an org chart. Three
+# functions were missing (product, client_success, professional_services) and
+# partnerships was defined too narrowly to cover business-to-business selling
+# outside sponsorship.
+#
+# Resolution across the corpora, v1 -> v2, with no title losing a function it
+# previously resolved to:
+#
+#   Packers front office (136)        90.4% -> 91.2%
+#   Bills/Dolphins held out (676)     58.1% -> 60.1%   (37% of rows are not titles)
+#   Vikings front office (180)        76.7% -> 95.6%
+#   Software vendor (29)              51.7% -> 100.0%
+
+version: 2
+status: draft
+updated: 2026-08-29
+supersedes: functions.v1.yaml
+
+functions:
+  - slug: partnerships
+    label: Partnerships and Business Development
+    scope: in
+    definition: >
+      Winning commercial relationships with other organizations — corporate
+      partnerships, sponsorship, activation and fulfilment, the sale of media and
+      broadcast inventory, and, at a vendor or agency, new-business sales.
+    boundary: >
+      Selling to organizations, not to fans. Selling seats to a company is
+      ticketing; selling a company signage and rights is partnerships.
+      Winning the account is partnerships; keeping and servicing it afterwards
+      is client_success.
+    changed_in_v2: >
+      Widened from sponsorship to business-to-business selling generally, so a
+      vendor's "Regional Sales Manager" has a home. The slug is unchanged
+      because the meaning generalized rather than moved.
+
+  - slug: client_success
+    label: Client Success and Account Management
+    scope: in
+    new_in_v2: true
+    definition: >
+      Keeping and growing a named commercial account after it is won — account
+      management, customer and technical success, advocacy, and renewals.
+    boundary: >
+      Distinguished from partnerships by which side of the sale it sits on.
+      Introduced because "Account Manager" and "Account Service Coordinator"
+      previously matched finance on the word "account", which put sales and
+      service staff in the finance column at both a vendor and a club.
+      Fan-facing season-ticket service remains ticketing; this is for accounts
+      held by an organization.
+
+  - slug: professional_services
+    label: Professional Services
+    scope: in
+    new_in_v2: true
+    definition: >
+      Billable delivery to a client — consulting, implementation, onboarding,
+      solutions architecture, and technical project delivery sold as a service.
+    boundary: >
+      Work delivered *for a client*. The same skills applied to the
+      organization's own systems are technology.
+
+  - slug: product
+    label: Product
+    scope: in
+    new_in_v2: true
+    definition: >
+      Deciding what gets built and for whom — product management and ownership,
+      product strategy, and product design, for software or digital products.
+    boundary: >
+      Product decides what to build; technology builds it; marketing sells it.
+      "Product Marketing" is marketing.
+
+  - slug: ticketing
+    label: Ticketing and Premium
+    scope: in
+    definition: >
+      Selling and servicing admission to fans and companies — general ticketing,
+      season memberships, box office, and premium seating, suites, and
+      hospitality inventory.
+    boundary: >
+      Owns the transaction and the account relationship. Service delivered
+      on-site on event day is guest_services.
+
+  - slug: guest_services
+    label: Guest Services
+    scope: in
+    definition: >
+      On-site service to people attending — guest experience, ushers, greeters,
+      ambassadors, suite attendants, concierge, and customer service.
+    boundary: >
+      The service, not the show. Producing what happens on the field surface or
+      the videoboard is fan_experience.
+
+  - slug: fan_experience
+    label: Fan Experience and Events
+    scope: in
+    definition: >
+      Producing the event and the attractions around it — game presentation,
+      entertainment, in-game hosting, performers and mascots, event booking and
+      operations, tours, halls of fame, and destination programming.
+    boundary: >
+      Fan-facing production and programming. Marketing campaigns that sell the
+      event are marketing; the venue's physical operation is venue_operations.
+
+  - slug: marketing
+    label: Marketing and Brand
+    scope: in
+    definition: >
+      Brand stewardship, campaigns, advertising, promotions, and demand
+      generation across audiences.
+    boundary: >
+      Owns the message and the campaign. Producing the assets is content_media;
+      earned and reputational work is communications.
+
+  - slug: content_media
+    label: Content and Media Production
+    scope: in
+    definition: >
+      Making and distributing owned media — editorial content, social channels,
+      digital platforms and apps as publishing surfaces, video and broadcast
+      production, photography, design, and creative services.
+    boundary: >
+      Game-film and coaching video is on_field. "Director of Video" is
+      genuinely ambiguous and resolves to unknown without further signal.
+
+  - slug: communications
+    label: Communications and Public Affairs
+    scope: in
+    definition: >
+      Reputation and external relations — public relations, media relations,
+      press operations, public affairs, and government relations.
+
+  - slug: community
+    label: Community and Foundation
+    scope: in
+    definition: >
+      Community relations and impact, charitable foundation work, corporate and
+      foundation giving, youth and grassroots programming, and alumni relations.
+    boundary: >
+      Community work often carries the sport's name — "Football Outreach" is
+      community, not on_field. Test purpose, not vocabulary.
+
+  - slug: retail
+    label: Retail and Merchandise
+    scope: in
+    definition: >
+      Merchandise and licensed product — team stores, retail operations, store
+      logistics, and e-commerce.
+
+  - slug: food_beverage
+    label: Food and Beverage
+    scope: in
+    definition: >
+      Concessions, catering, culinary and restaurant operations, and the service
+      roles that deliver them.
+    boundary: >
+      Thin in the derivation corpus because profile scrapes under-represent
+      hourly service staff. Held-out data confirmed the function is real.
+
+  - slug: venue_operations
+    label: Venue Operations
+    scope: in
+    definition: >
+      Running the physical venue — stadium services and operations, facilities
+      and building trades, grounds, engineering and mechanical systems,
+      housekeeping, parking, transport, security, and safety.
+    boundary: >
+      Building and rebuilding is real_estate_development; running what exists is
+      venue_operations.
+
+  - slug: real_estate_development
+    label: Real Estate and Development
+    scope: in
+    definition: >
+      Property and capital projects — stadium development and construction,
+      mixed-use district development, capital programmes, and design and
+      construction management.
+
+  - slug: analytics
+    label: Analytics and Insight
+    scope: in
+    definition: >
+      Business intelligence, data engineering and warehousing, fan and consumer
+      insight, CRM analysis, and market research.
+    boundary: >
+      Business-side analysis only. Player and game analysis is on_field.
+
+  - slug: technology
+    label: Technology
+    scope: in
+    definition: >
+      Information technology, applications and software development, digital
+      platform engineering, quality assurance, networks and infrastructure,
+      audiovisual and broadcast engineering, information security, and internal
+      technical project delivery.
+    boundary: >
+      Information security is technology. A bare "Security Analyst" at a club is
+      ambiguous — it may be venue security or an on-field intelligence role —
+      and resolves to unknown; "Information Security Analyst" does not.
+      Technology serves the organization's own systems; the same work sold to a
+      client is professional_services.
+
+  - slug: finance
+    label: Finance
+    scope: in
+    definition: >
+      Accounting, financial planning and control, payroll, treasury, audit,
+      procurement, and risk and insurance.
+    boundary: >
+      "Account" is not a finance word on its own. An account manager, account
+      executive, or account service coordinator sells or services a customer
+      relationship and belongs to client_success. Finance keeps the books.
+
+  - slug: legal
+    label: Legal and Compliance
+    scope: in
+    definition: >
+      Counsel, contracting, regulatory compliance, and risk of a legal nature.
+
+  - slug: people
+    label: People and Culture
+    scope: in
+    definition: >
+      Human resources, talent acquisition, benefits and compensation, learning,
+      and employee experience.
+
+  - slug: administration
+    label: Administration
+    scope: in
+    definition: >
+      Executive and organizational support — chief of staff, executive
+      assistance, office and team administration, and business operations
+      support that is not attached to another function.
+
+  - slug: executive
+    label: Executive Leadership
+    scope: in
+    definition: >
+      Apex leadership whose remit is the whole organization rather than one
+      domain — chief executive, president, chief operating officer, chief
+      strategy officer.
+    boundary: >
+      A reserve, not a default. A C-level affiliation lands in the function it
+      oversees wherever that is knowable: a CFO is finance, a CRO is
+      partnerships. Only genuinely cross-domain leadership belongs here.
+
+  - slug: on_field
+    label: On-field (out of scope)
+    scope: out
+    definition: >
+      Roles that exist to run the on-field competitive product — playing,
+      coaching, scouting, player personnel, athletic training and medical,
+      performance science and nutrition, sports psychology, equipment, and
+      game-film video. Also the football-side business functions that carry a
+      domain word — football strategy, football information systems, football
+      quantitative methods — and player development, player health and
+      performance, and coordinator roles for units of play.
+    boundary: >
+      Classified like any other function and excluded by product surfaces
+      afterwards; never rejected at ingest. Scope attaches to the affiliation,
+      never to the person (ADR-0013).
+
+      Test purpose, not vocabulary, and in both directions: "Football Outreach
+      Coordinator" is community, while "Director of Football Strategy" is not.
+      "Director of Family Engagement" is community, while "Director of Player
+      Development/Engagement" is on_field.
+
+  - slug: unknown
+    label: Unknown
+    scope: unresolved
+    definition: >
+      The title is real but its function cannot be determined with confidence,
+      or it sits on the scope boundary — alumni-facing work, "Director of
+      Video", "Director of Operations", "Assistant General Manager", or a bare
+      rank such as "Vice President" or "Analyst" with no domain attached.
+    boundary: >
+      An honest answer, not a failure state. Preferred over a confident wrong
+      function wherever oversight or domain is unclear. Roughly 5% of a curated
+      club batch lands here, and that number should not be optimized down by
+      guessing.
+
+# Corpora used. Every title is a real one; none was invented to make a rule work.
+#
+#   nfl-green-bay-packers   136   derivation corpus for v1
+#   Bills / Dolphins        676   held out for v1; an association list, not a
+#                                 staff list, so a third of rows are not titles
+#   nfl-minnesota-vikings   180   held out for v2
+#   vendor-satisfy-labs      29   held out for v2; the corpus that broke v1
+#
+# The vendor corpus is small, and a single software vendor is not every vendor.
+# An agency — account planning, creative strategy, media buying — has not been
+# seen yet and may well need more than these three functions.

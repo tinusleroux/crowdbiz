@@ -26,13 +26,13 @@ If a producer does send a normalized hint, it is treated as a hint with provenan
 
 ## The producer boundary
 
-Collection lives outside this repository ([ADR-0003](../decisions/0003-collection-outside-this-repo.md)). No scrapers, crawlers, research desks, or editorial tooling here.
+Producers may live in this repository ([ADR-0015](../decisions/0015-producers-live-here.md)), but the boundary between collecting and modelling is unchanged: a producer emits validated, fully-provenanced claims and nothing else. Producer-side tables — raw capture, curation state, run history — sit before the claim zone and are never an input to the derived zone.
 
 The boundary is a batch CSV claim contract, specified in [../contracts/claim-schema.md](../contracts/claim-schema.md).
 
 The first producer is a seeding project supplying team-side depth. Later producers use the same contract — a corrections batch, or a press-release extractor that finds someone accepting a new job. There is no privileged side channel into the graph.
 
-**Users are producers too.** A viewer correcting an org chart, or a person claiming themselves and supplying their own history, emits ordinary claims with their own source types. This is a product surface rather than collection, so it does not conflict with [ADR-0003](../decisions/0003-collection-outside-this-repo.md), and self-assertion carries high weight for identity without automatically carrying it for title ([ADR-0010](../decisions/0010-person-identity-without-pii.md)). What a user account may bind to is still open ([ADR-0011](../decisions/0011-account-to-person-binding.md)).
+**Users are producers too.** A viewer correcting an org chart, or a person claiming themselves and supplying their own history, emits ordinary claims with their own source types. This is a product surface rather than collection, and self-assertion carries high weight for identity without automatically carrying it for title ([ADR-0010](../decisions/0010-person-identity-without-pii.md)). What a user account may bind to is still open ([ADR-0011](../decisions/0011-account-to-person-binding.md)).
 
 ---
 

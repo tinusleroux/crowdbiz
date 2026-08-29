@@ -80,7 +80,7 @@ The vocabulary is exact. Code, schemas, and documents use these words with these
 
 **warm path** — a route through the overlay to someone the viewer does not know directly.
 
-**producer** — anything that emits claims: the seeding project, a news extractor, or the product's own users submitting corrections and self-assertions. Collection from third-party sources lives outside this repository; user-submitted claims are a product surface ([ADR-0003](decisions/0003-collection-outside-this-repo.md)).
+**producer** — anything that emits claims: the seeding scraper, a news extractor, or the product's own users submitting corrections and self-assertions. Producers may live in this repository, and reach the claim zone only through the claim contract ([ADR-0015](decisions/0015-producers-live-here.md)).
 
 ---
 

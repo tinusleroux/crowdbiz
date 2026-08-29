@@ -15,7 +15,7 @@ An ADR with status `Open` is not binding. It records that a decision is being ma
 | --- | --- | --- |
 | [0001](0001-core-object-model.md) | Person, Organization, Affiliation, and Relationship are the core objects | Accepted |
 | [0002](0002-claims-before-interpretation.md) | Producers emit claims; function and seniority are derived after resolve | Accepted |
-| [0003](0003-collection-outside-this-repo.md) | Data collection lives outside this repo; the boundary is a batch CSV claim contract | Accepted |
+| [0003](0003-collection-outside-this-repo.md) | Data collection lives outside this repo; the boundary is a batch CSV claim contract | ~~Superseded~~ by [0015](0015-producers-live-here.md) |
 | [0004](0004-no-pii.md) | No PII, including for identity matching | Accepted |
 | [0005](0005-org-chart-is-the-product.md) | The public org chart is a first-class product surface, and team-side depth is a launch constraint | Accepted |
 | [0006](0006-no-role-seat-department-entities.md) | No Role, Job, Seat, or Department entities in v1 | Accepted |
@@ -27,6 +27,7 @@ An ADR with status `Open` is not binding. It records that a decision is being ma
 | [0012](0012-identity-survives-reclustering.md) | Identity survives re-clustering — stable UIDs and identity assertions as claims | Accepted |
 | [0013](0013-on-field-roles-out-of-scope.md) | On-field roles are out of scope — classified, not rejected | Accepted |
 | [0014](0014-seniority-scale.md) | Seniority is a nine-band ordered scale where lower is more senior | Accepted |
+| [0015](0015-producers-live-here.md) | Producers live in this repository; the claim contract stays the only write path | Accepted |
 
 ## Writing one
 

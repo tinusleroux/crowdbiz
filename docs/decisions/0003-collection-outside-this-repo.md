@@ -1,17 +1,19 @@
 ---
 id: 0003
 title: Data collection lives outside this repo; the boundary is a batch CSV claim contract
-status: Accepted
+status: Superseded
 date: 2026-08-29
 supersedes: null
-superseded_by: null
+superseded_by: 0015
 ---
 
 # ADR-0003 — Data collection lives outside this repo; the boundary is a batch CSV claim contract
 
 ## Status
 
-`Accepted`
+`Superseded` by [ADR-0015](0015-producers-live-here.md), which permits producers in this repository while keeping the claim contract as the only write path into the claim zone.
+
+The reasoning below is kept for history. What it got right — that the contract is the boundary, and that collection and modelling fail differently — survives in ADR-0015. What changed is that the pipeline became narrow and specified, so the cost of a second repository stopped buying anything.
 
 ## Context
 

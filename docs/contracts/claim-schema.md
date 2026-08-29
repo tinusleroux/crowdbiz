@@ -8,7 +8,7 @@ decided_by: [0002, 0003, 0004, 0010, 0013]
 
 > **Draft, but no longer blocked.** Identity is settled by [ADR-0010](../decisions/0010-person-identity-without-pii.md), so this can now be built against. It stays `draft` because no batch of real data has been run through it yet — the remaining risk is validation, not an unresolved decision. A successful pilot batch moves it to `canonical`.
 
-The only way facts enter the map ([ingest.md](../architecture/ingest.md)). Producers emit files that satisfy this contract; this repository validates, resolves, and interprets them ([ADR-0003](../decisions/0003-collection-outside-this-repo.md)).
+The only way facts enter the map ([ingest.md](../architecture/ingest.md)). Producers emit batches that satisfy this contract; ingest validates, resolves, and interprets them. Producers may live in this repository, but this contract is the only write path into the claim zone ([ADR-0015](../decisions/0015-producers-live-here.md)).
 
 Storage-neutral by design: this describes a file format, not a table. The datastore is open ([ADR-0009](../decisions/0009-stack-and-datastore.md)).
 

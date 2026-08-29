@@ -2,7 +2,9 @@
 
 CrowdBiz Graph is a living map of the crowd-business side of professional sports: who sits where, how organizations are structured, and how a personal network reaches into them.
 
-**Current state: documentation and vocabulary, no application code yet.** The datastore is decided — Postgres in three zones ([ADR-0009](docs/decisions/0009-stack-and-datastore.md)) — with the schema sketched non-bindingly in [docs/architecture/data-model.md](docs/architecture/data-model.md). The web framework is deliberately not decided, because it is cheap to reverse.
+**Current state: one producer built, platform not started.** [`crowdbiz_seeding/`](crowdbiz_seeding/) collects public profile data one organization at a time and emits validated claim batches; it lives here under [ADR-0015](docs/decisions/0015-producers-live-here.md). Nothing consumes those batches yet — the claim schema and the batch importer do not exist.
+
+The datastore is decided — Postgres in three zones ([ADR-0009](docs/decisions/0009-stack-and-datastore.md)) — with the schema sketched non-bindingly in [docs/architecture/data-model.md](docs/architecture/data-model.md). The web framework is deliberately not decided, because it is cheap to reverse.
 
 The function and seniority vocabularies live in [ontology/](ontology/) as versioned data. They are not code and must not be reimplemented as constants — read them.
 
@@ -38,7 +40,7 @@ These are settled. Do not relitigate them inside a feature; open an ADR instead.
 
 - **No PII.** No email, phone, or personal contact channels — not even for matching. If a feature needs PII, the feature is wrong. ([ADR-0004](docs/decisions/0004-no-pii.md))
 - **Claims in, ontology after.** Producers assert sourced facts. `function` and `seniority` are derived here, after resolve. Never ingest them as truth. ([ADR-0002](docs/decisions/0002-claims-before-interpretation.md))
-- **No collectors in this repo.** No scrapers, crawlers, or research pipelines. The boundary is a batch CSV claim contract. ([ADR-0003](docs/decisions/0003-collection-outside-this-repo.md))
+- **Producers may live here; the claim contract is the only write path.** Collectors are permitted, but nothing reaches the claim zone except through validated, fully-provenanced claims — enforced by schema and grants, not by convention. ([ADR-0015](docs/decisions/0015-producers-live-here.md), superseding ADR-0003)
 - **No `Role`, `Job`, `Seat`, or `Department` entities.** `function` on an affiliation is the department-like vocabulary; seats and department nodes are projections. ([ADR-0006](docs/decisions/0006-no-role-seat-department-entities.md))
 - **`KNOWS` never defines org structure.** The social overlay is consent-scoped and separate. ([ADR-0008](docs/decisions/0008-knows-overlay-separate.md))
 - **Reporting hangs on affiliations, not people.** ([ADR-0001](docs/decisions/0001-core-object-model.md))
@@ -98,6 +100,38 @@ If an ADR is blocking the obviously right solution, raise it. Do not route aroun
 
 ## Building things
 
-No code exists yet, so there are no build, test, or run commands. Add them here as soon as there are, and keep this section current.
+### Layout
 
-When code does start, two tests matter more than the rest: the derived zone rebuilds from claims alone, and a batch re-imports idempotently.
+```
+crowdbiz_seeding/   producer: profile scrape -> validated claim batch  (Next.js, Drizzle, Postgres)
+ontology/           function and seniority vocabularies (data, not code)
+docs/               decisions, contracts, architecture, product
+```
+
+The platform — claim schema, batch importer, resolve, derive, product surfaces — is not built. When it lands it gets its own directory alongside the producer; do not put it inside `crowdbiz_seeding/`.
+
+### Commands
+
+All run from `crowdbiz_seeding/` and need `pnpm`.
+
+```bash
+pnpm install
+pnpm test          # vitest — includes the claim contract validator
+pnpm lint
+docker compose up -d db   # local Postgres on 5433
+pnpm db:migrate
+pnpm db:seed
+pnpm worker        # processes queued scrape runs   (terminal 1)
+pnpm dev           # operator UI on :3000            (terminal 2)
+```
+
+Running a scrape needs `APIFY_TOKEN` in `.env.local` and spends money. `pnpm test` does not.
+
+### Tests that matter more than the rest
+
+Two are not yet written, because the code they test does not exist. They are the acceptance criteria for the import side:
+
+- The derived zone rebuilds from claims alone. Drop `core`, rebuild, and get the same graph.
+- A batch re-imports idempotently. Import the same directory twice and the claim count does not change.
+
+A third exists today and must keep passing: a batch carrying `function`, `seniority`, or any contact channel is rejected at emit rather than at import.

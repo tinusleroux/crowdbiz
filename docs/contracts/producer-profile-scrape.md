@@ -8,7 +8,9 @@ decided_by: [0002, 0003, 0004, 0010, 0013]
 
 How the seeding project turns one organization's public professional profiles into a batch this repository will accept.
 
-[claim-schema.md](claim-schema.md) is the authority on format; this describes one way of satisfying it and adds nothing binding. Where the two disagree, the contract wins. Collection itself happens outside this repository ([ADR-0003](../decisions/0003-collection-outside-this-repo.md)).
+[claim-schema.md](claim-schema.md) is the authority on format; this describes one way of satisfying it and adds nothing binding. Where the two disagree, the contract wins.
+
+Implemented by the seeding producer in `crowdbiz_seeding/`, which lives in this repository ([ADR-0015](../decisions/0015-producers-live-here.md)).
 
 ---
 

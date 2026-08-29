@@ -130,20 +130,22 @@ Wherever function or seniority drives layout or "who matters," the product can s
 
 ---
 
-## The v1 vocabularies
+## The vocabularies
 
 The principles above are binding. The enumerations that satisfy them are versioned data, not prose in this document:
 
-- **Function** — [../../ontology/functions.v1.yaml](../../ontology/functions.v1.yaml). Nineteen in-scope crowd-business domains, plus `on_field` as the explicit out-of-scope category ([ADR-0013](../decisions/0013-on-field-roles-out-of-scope.md)) and `unknown` for genuine ambiguity.
+- **Function** — [../../ontology/functions.v2.yaml](../../ontology/functions.v2.yaml). Twenty-two in-scope crowd-business domains, plus `on_field` as the explicit out-of-scope category ([ADR-0013](../decisions/0013-on-field-roles-out-of-scope.md)) and `unknown` for genuine ambiguity.
 - **Seniority** — [../../ontology/seniority.v1.yaml](../../ontology/seniority.v1.yaml). Nine ordered bands, lower meaning more senior, with modifiers adjusting a band rather than creating one ([ADR-0014](../decisions/0014-seniority-scale.md)).
 
-Both were derived from 136 real front-office titles at one NFL club and stress-tested against 490 titles from clubs that were not used to build them. Three things that survived contact with the held-out data are worth keeping in view:
+Four things that survived contact with held-out data are worth keeping in view:
 
-**Purpose beats vocabulary when classifying scope.** "Football Outreach Coordinator" is community work; "Director of Football Administration" is not. Any rule keyed on the word rather than the purpose gets both wrong, in opposite directions.
+**Purpose beats vocabulary when classifying scope.** "Football Outreach Coordinator" is community work; "Director of Football Administration" is not. "Director of Family Engagement" is community; "Director of Player Development/Engagement" is on-field. Any rule keyed on the word rather than the purpose gets both wrong, in opposite directions.
 
-**Modifiers must adjust, not enumerate.** Treating "Assistant Director" as its own entry rather than as `director` shifted one band doubles the vocabulary and still misses the next modifier. This is principle 8 stated operationally.
+**Modifiers must adjust, not enumerate.** Treating "Assistant Director" as its own entry rather than as `director` shifted one band doubles the vocabulary and still misses the next modifier. This is principle 8 stated operationally. The same care applies in reverse: "executive" is a seniority modifier in "Executive Vice President" and not in "Account Executive", which is an individual contributor.
 
-**Coverage gaps follow the source, not the ontology.** The derivation corpus contained almost no building trades or food-service line roles, because profile-sourced data under-represents them — not because clubs lack them. The held-out data supplied both. Expect the vocabulary to look complete in exactly the places the seed source is strong, which is the same skew recorded as Q-11.
+**A near-miss is worse than an unknown.** v1 filed "Senior Account Manager" under finance because the title contains "account". An unclassified row shows as a gap; a plausible wrong one draws a salesperson into the finance column of an org chart and nobody notices. Prefer `unknown`.
+
+**Coverage gaps follow the source, not the ontology.** The v1 corpus contained almost no building trades or food-service line roles, because profile-sourced data under-represents them — not because clubs lack them. Held-out data supplied both. Expect the vocabulary to look complete in exactly the places the seed source is strong, which is the skew recorded as Q-11.
 
 ---
 

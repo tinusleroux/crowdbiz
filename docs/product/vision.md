@@ -47,7 +47,7 @@ Users navigate **structure**. A public org chart is the base view; a personal ne
 
 - Not a CRM, a messaging app, or a contact database
 - Not "LinkedIn with sports filters" — LinkedIn is general-purpose and PII-heavy; this is industry infrastructure optimized for structure, access paths, and the collective currency of the map
-- Not a data-collection product — claim producers live elsewhere ([ADR-0003](../decisions/0003-collection-outside-this-repo.md))
+- Not a data-collection product — producers exist to feed the map, and only ever through the claim contract ([ADR-0015](../decisions/0015-producers-live-here.md))
 
 ---
 
@@ -149,7 +149,7 @@ Intelligence features read the graph and the ontology. They do not bypass them.
 - CRM pipelines, deal stages, or activity tracking
 - Any personal contact data
 - Multi-tenant enterprise administration, SSO fleets, or billing complexity
-- Collectors of any kind, including news crawling ([ADR-0003](../decisions/0003-collection-outside-this-repo.md))
+- Open-ended collection — one specified seeding producer, not a research capability ([ADR-0015](../decisions/0015-producers-live-here.md))
 - Perfect global person deduplication or exhaustive worldwide coverage
 - A consent ceremony product — one visibility control is enough
 
