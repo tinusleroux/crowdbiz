@@ -1,7 +1,7 @@
 ---
 status: draft
 updated: 2026-08-29
-decided_by: [0002, 0003, 0004, 0010]
+decided_by: [0002, 0003, 0004, 0010, 0013]
 ---
 
 # Claim contract — batch CSV
@@ -94,6 +94,8 @@ The core file. One row asserts that a person participated in an organization.
 
 **Not accepted here:** `function`, `seniority`, or any normalized rank. Those are derived after resolve ([ADR-0002](../decisions/0002-claims-before-interpretation.md)). A producer sending them fails validation.
 
+**A note on sources.** Profile-scraped data describes who *mentions* an organization, not who works there in a crowd-business role, and it arrives full of students, alumni, players, and unrelated employers. It is a source you curate a batch from, not a batch. Organizational staff directories are the better input, because they carry real titles and implied grouping.
+
 ---
 
 ## relationships.csv
@@ -113,11 +115,13 @@ The core file. One row asserts that a person participated in an organization.
 ## Rules for producers
 
 1. **Report, do not interpret.** Send what the source said. Classification happens here.
-2. **Never guess reporting.** An org chart position on a page is not a reporting line. Omit rather than invent.
-3. **Absence is not falsity.** A missing end date means unknown, not ongoing.
-4. **Corrections are new claims.** Re-emit with a new `claim_id` and a current `observed_at`. Nothing is deleted.
-5. **Stable references matter more than pretty ones.** `org_ref` and `person_ref` must mean the same thing across batches.
-6. **One source per row.** If two sources agree, send two rows and let corroboration do its work.
+2. **Do not collect on-field roles.** Players, coaches, scouts, player personnel, athletic training, equipment, and game-film video are out of scope ([ADR-0013](../decisions/0013-on-field-roles-out-of-scope.md)). If a few slip through from a mixed source such as a full staff directory, they are classified and filtered rather than rejected — but do not go looking for them, and never send a roster.
+3. **Never guess reporting.** An org chart position on a page is not a reporting line. Omit rather than invent.
+4. **Absence is not falsity.** A missing end date means unknown, not ongoing.
+5. **Corrections are new claims.** Re-emit with a new `claim_id` and a current `observed_at`. Nothing is deleted.
+6. **Stable references matter more than pretty ones.** `org_ref` and `person_ref` must mean the same thing across batches.
+7. **One source per row.** If two sources agree, send two rows and let corroboration do its work.
+8. **A title must be a title.** A company name, a university, "Student", or a hedge such as "not specified" is not a title. If the source does not give a role, omit the row rather than filling the field with something else.
 
 ---
 

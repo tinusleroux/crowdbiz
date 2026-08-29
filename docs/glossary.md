@@ -1,7 +1,7 @@
 ---
 status: canonical
 updated: 2026-08-29
-decided_by: [0001, 0002, 0006, 0007, 0008, 0009, 0010, 0012]
+decided_by: [0001, 0002, 0006, 0007, 0008, 0009, 0010, 0012, 0013]
 ---
 
 # Glossary
@@ -43,6 +43,8 @@ The vocabulary is exact. Code, schemas, and documents use these words with these
 **`Affiliation.type`** — *how* a person participates: `employed`, `contracted`, `advising`, `board`, `ownership`, `other`.
 
 **function** — *which domain* of crowd-business work an affiliation belongs to. A controlled vocabulary, shared across all organization types ([ADR-0007](decisions/0007-one-ontology-across-org-types.md)). **Derived, not claimed.** This is also the department-like grouping in v1.
+
+**out of scope** — an affiliation whose purpose is the on-field competitive product: playing, coaching, scouting, player personnel, athletic training, equipment, sports science, game-film video. Classified as such rather than rejected, and filtered by product surfaces. A property of the affiliation, never of the person ([ADR-0013](decisions/0013-on-field-roles-out-of-scope.md)).
 
 **seniority** — *how senior*, on an ordered scale, for layout and comparison. **Derived, not claimed.** Not a judgment of worth, pay, or legal authority.
 

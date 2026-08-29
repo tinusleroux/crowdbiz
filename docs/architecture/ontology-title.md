@@ -1,7 +1,7 @@
 ---
 status: canonical
 updated: 2026-08-29
-decided_by: [0001, 0002, 0004, 0006, 0007]
+decided_by: [0001, 0002, 0004, 0006, 0007, 0013]
 ---
 
 # Title ontology — function, seniority, and structural depth
@@ -102,19 +102,29 @@ High confidence may flow straight into projections. Medium and low confidence sh
 
 Assistive models, including LLMs, may propose function and seniority. They do not become the ontology. Structure stays queryable without calling a model at read time.
 
-### 11. One ontology across organization types
+### 11. Scope is classified, not filtered at the door
+
+The function vocabulary carries explicit **out-of-scope** categories for on-field work — playing, coaching, scouting, player personnel, athletic training, equipment, sports science, game-film video.
+
+These are classified like any other function, on the affiliation, and excluded by product surfaces afterwards. They are never rejected at ingest, because scope cannot be judged before interpretation: "Director of Video" is game film or content marketing depending on context, and only the ontology can tell.
+
+The test is purpose — does this role exist to run the on-field competitive product? Roles genuinely on the line, such as player engagement or football communications, go to Unknown rather than a forced call ([ADR-0013](../decisions/0013-on-field-roles-out-of-scope.md)).
+
+Scope attaches to the affiliation, never to the person. A former player who becomes VP of Alumni Relations holds one out-of-scope affiliation and one in-scope one.
+
+### 12. One ontology across organization types
 
 One function and seniority system for teams, vendors, agencies, and sponsors. Organization type may inform disambiguation; it must never fork the vocabulary ([ADR-0007](../decisions/0007-one-ontology-across-org-types.md)).
 
-### 12. Version the ontology
+### 13. Version the ontology
 
 When categories or rules change, record an ontology version on derived structure. Historical charts stay interpretable and rebuilds are intentional.
 
-### 13. Beachhead depth over universal coverage
+### 14. Beachhead depth over universal coverage
 
 A sharp, credible function set for the first market slice beats a bloated global HR taxonomy. Expand when real titles demand it, not in anticipation of every synonym.
 
-### 14. Explainability is user-facing
+### 15. Explainability is user-facing
 
 Wherever function or seniority drives layout or "who matters," the product can show that this was inferred, from what evidence, with the raw title still available. Silent invention undermines trust in a public map.
 
@@ -165,3 +175,4 @@ An approach is aligned if:
 9. Structural depth, where present, is computed along `REPORTS_TO` and used as a lens, not as a substitute for classification.
 10. Depth and title-derived seniority can disagree without breaking the model.
 11. `Affiliation.type` is never conflated with function or seniority.
+12. On-field affiliations are classified as out-of-scope rather than rejected, and the person remains in the graph.

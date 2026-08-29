@@ -51,6 +51,8 @@ Structural depth needs a defined top. Candidates differ by organization type: co
 
 The actual enumerated list of crowd-business functions. Beachhead depth beats a global HR taxonomy ([ADR-0007](decisions/0007-one-ontology-across-org-types.md)), and it must describe a vendor as well as a team.
 
+It also needs the out-of-scope categories from [ADR-0013](decisions/0013-on-field-roles-out-of-scope.md), which are classified but never displayed.
+
 *Forces an answer:* the first interpretation pass over real titles.
 *Touches:* [architecture/ontology-title.md](architecture/ontology-title.md), [glossary.md](glossary.md)
 

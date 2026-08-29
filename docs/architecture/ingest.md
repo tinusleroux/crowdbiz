@@ -1,7 +1,7 @@
 ---
 status: canonical
 updated: 2026-08-29
-decided_by: [0002, 0003, 0004, 0009, 0010, 0011, 0012]
+decided_by: [0002, 0003, 0004, 0009, 0010, 0011, 0012, 0013]
 ---
 
 # Ingest — the producer boundary and the claim pipeline
@@ -82,6 +82,8 @@ Conflict is a first-class state, not an error. Provenance, recency, and corrobor
 ### 3. Interpret
 
 The ontology runs on the resolved affiliation: `function` and `seniority`, with confidence and traceability, stamped with an ontology version. Rules are in [ontology-title.md](ontology-title.md).
+
+Scope is decided here too, not at validation. On-field affiliations are classified into out-of-scope functions and filtered by product surfaces, because "Director of Video" cannot be judged before it is interpreted ([ADR-0013](../decisions/0013-on-field-roles-out-of-scope.md)).
 
 Interpretation is recomputable. Improving the ontology re-derives structure without touching a single claim.
 

@@ -1,7 +1,7 @@
 ---
 status: canonical
 updated: 2026-08-29
-decided_by: [0003, 0004, 0005, 0008]
+decided_by: [0003, 0004, 0005, 0008, 0013]
 ---
 
 # Product vision
@@ -23,6 +23,8 @@ This is a network-effect product. Every core mechanic should make sharing improv
 ## The problem
 
 People in team front offices are described as working in "sports." Most of that work has little to do with coaches, players, or the on-field product. It is **crowd business**: managing, operating, and monetizing live crowds — ticketing, stadium operations, game presentation, local sponsorships, merchandise, security, concessions.
+
+That line is enforced, not merely stated: on-field roles are classified as out of scope and excluded from every surface ([ADR-0013](../decisions/0013-on-field-roles-out-of-scope.md)).
 
 Everyone in the ecosystem hits the same two walls:
 

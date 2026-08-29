@@ -42,6 +42,7 @@ These are settled. Do not relitigate them inside a feature; open an ADR instead.
 - **Reporting hangs on affiliations, not people.** ([ADR-0001](docs/decisions/0001-core-object-model.md))
 - **The derived zone must rebuild from claims alone.** Nothing may live only in derived tables. ([ADR-0009](docs/decisions/0009-stack-and-datastore.md))
 - **Person UIDs are stable across re-clustering**, and human identity judgments are claims, not one-off merges. ([ADR-0012](docs/decisions/0012-identity-survives-reclustering.md))
+- **On-field roles are out of scope** — classified and filtered, never rejected at ingest, and scoped to the affiliation rather than the person. ([ADR-0013](docs/decisions/0013-on-field-roles-out-of-scope.md))
 
 ---
 
