@@ -11,6 +11,8 @@
     "worker": "tsx src/worker/index.ts",
     "db:migrate": "tsx src/db/migrate.ts",
     "db:seed": "tsx src/scripts/seed-packers.ts",
+    "db:seed:leagues": "tsx src/scripts/seed-leagues.ts",
+    "enqueue": "tsx src/scripts/enqueue-runs.ts",
     "replay": "tsx src/scripts/replay-dataset.ts"
   },
   "dependencies": {
