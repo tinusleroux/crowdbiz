@@ -1,7 +1,7 @@
 ---
 status: canonical
 updated: 2026-08-29
-decided_by: [0002, 0003, 0004, 0010]
+decided_by: [0002, 0003, 0004, 0010, 0011]
 ---
 
 # Ingest — the producer boundary and the claim pipeline
@@ -31,6 +31,8 @@ Collection lives outside this repository ([ADR-0003](../decisions/0003-collectio
 The boundary is a batch CSV claim contract, specified in [../contracts/claim-schema.md](../contracts/claim-schema.md).
 
 The first producer is a seeding project supplying team-side depth. Later producers use the same contract — a corrections batch, or a press-release extractor that finds someone accepting a new job. There is no privileged side channel into the graph.
+
+**Users are producers too.** A viewer correcting an org chart, or a person claiming themselves and supplying their own history, emits ordinary claims with their own source types. This is a product surface rather than collection, so it does not conflict with [ADR-0003](../decisions/0003-collection-outside-this-repo.md), and self-assertion carries high weight for identity without automatically carrying it for title ([ADR-0010](../decisions/0010-person-identity-without-pii.md)). What a user account may bind to is still open ([ADR-0011](../decisions/0011-account-to-person-binding.md)).
 
 ---
 
@@ -62,7 +64,7 @@ A batch that fails validation is rejected as a unit with an actionable report. P
 
 Reconcile the claim against what is already known. This is where identity and history live.
 
-Person identity matching without PII is unresolved and blocks this stage's design — see [ADR-0010](../decisions/0010-person-identity-without-pii.md).
+**Identity.** A Person is a derived cluster over immutable claims, keyed by an internal UID that we assign. Producer references and public profile URLs are weighted evidence, never authority. Clustering is probabilistic — over name forms, organization, interval adjacency, affiliation sequence, profile URL, corroboration, and source-type weight — and confidence bands are per-surface, since a wrong grouping on a chart costs less than a wrong warm path to a named human. Because clustering is a projection, a merge is non-destructive and a better matcher re-derives identity retroactively. Full rules in [ADR-0010](../decisions/0010-person-identity-without-pii.md).
 
 Outcomes for an affiliation claim:
 
@@ -99,4 +101,5 @@ The extractor never writes "Partnerships, VP-band" into the graph. It reports wh
 - Every graph fact traces to at least one claim with a source.
 - Re-importing the same batch is idempotent.
 - Derived fields carry an ontology version so old structure stays interpretable.
+- Person identity is derived, versioned, and re-derivable — never destructively merged.
 - Nothing enters the graph except through this pipeline.

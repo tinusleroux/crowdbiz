@@ -27,6 +27,8 @@ Never encode an undecided thing as a silent default.
 
 ## Rules
 
+- **ADRs are non-bypassable, not immovable.** Never quietly build against an accepted ADR — but if implementation shows a decision is wrong, stop and supersede it rather than contorting the design. That is the system working.
+- Only ADR what is expensive to reverse. Decide the boundary, not the interior: constraints belong in ADRs, methods belong in code.
 - Canonical docs explain ADRs. They do not invent binding rules.
 - Reversing a decision means a new ADR that supersedes the old one. Never rewrite an accepted ADR to mean something else.
 - Update affected canonical docs in the same change as the ADR.

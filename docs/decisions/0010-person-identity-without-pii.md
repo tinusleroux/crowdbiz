@@ -1,73 +1,73 @@
 ---
 id: 0010
-title: Person identity and matching without PII
-status: Open
+title: Person identity is a derived cluster over claims, resolved probabilistically
+status: Accepted
 date: 2026-08-29
 supersedes: null
 superseded_by: null
+revisit_when: self-claims become a material share of identity evidence, or the map spans several leagues and cross-organization collisions rise
 ---
 
-# ADR-0010 — Person identity and matching without PII
+# ADR-0010 — Person identity is a derived cluster over claims, resolved probabilistically
 
 ## Status
 
-`Open` — not binding. This blocks the identity columns in [contracts/claim-schema.md](../contracts/claim-schema.md).
+`Accepted`
 
 ## Context
 
 [ADR-0001](0001-core-object-model.md) requires a durable Person. [ADR-0004](0004-no-pii.md) removes every conventional way of establishing one. There is no email to key on, and there will not be.
 
-Every claim that arrives must answer: is this the same person we already know? Get it wrong in one direction and one person becomes several, so an org chart shows phantom staff and coverage gaps are overstated. Get it wrong in the other and two people merge, which is worse — a career history that never happened, and a warm path to the wrong human.
+Every claim that arrives must answer whether this is somebody we already know. The two failure directions are not symmetric. A false split shows phantom staff on a chart and overstates coverage gaps — visible, embarrassing, and largely self-correcting. A false merge invents a career that never happened and can route a user to the wrong human, which is the kind of error that loses trust permanently.
 
-The hard cases are ordinary: common names inside the same organization, a hire announcement that predates any directory listing, a person appearing at a new organization before the old affiliation is closed, nicknames and married names, and initials in press releases.
+The hard cases are ordinary: common names inside one organization, a hire announcement that predates any directory listing, someone appearing at a new organization before the old affiliation is closed, nicknames, married names, and initials in press releases.
 
-This is a **resolve**-stage problem ([ADR-0002](0002-claims-before-interpretation.md)), separate from title interpretation. It must be settled before the claim contract can be finalized, since it dictates what producers are required to send.
+Accepting probabilistic resolution is not resignation, because identity here improves with use. As people look at charts of organizations they know, they can correct obvious errors. As the user base grows, people can claim themselves and supply their own employment history. Both arrive as ordinary claims, so the same pipeline that seeds the map also sharpens it.
+
+Two properties of the system already decided make this tractable. Claims are immutable and structure is a recomputable projection ([ADR-0002](0002-claims-before-interpretation.md)), so identity can be derived rather than asserted. And an affiliation sequence is close to a fingerprint — a person's history disambiguates them, which is self-reinforcing without being circular, since unambiguous names, profile URLs, and self-claims seed the process.
 
 ## Options
 
-### A. Producer-supplied stable identifiers
+Recorded because the rejected paths are instructive.
 
-Each producer assigns and maintains a durable key per person and sends it on every claim. Cross-producer identity is resolved by us.
+**Producer-supplied identifiers as authority** was rejected because it pushes identity management onto every producer, does nothing for a press extract seeing a person for the first time, and quietly turns a producer's key into a personal identifier.
 
-Simple and reliable within a producer, and re-imports are trivially idempotent. But it pushes identity management onto every producer, gives the seeding project a hard job it may not do consistently, and does nothing for a press extract that has never seen the person before. It also risks becoming a de facto personal identifier, which needs a privacy read.
+**A deterministic natural key** on name, organization, and interval was rejected because it fails exactly where the industry is dense — two people with the same name in one organization — and is weakest on cross-organization identity, which the overlay depends on.
 
-### B. Deterministic natural key
-
-Match on a normalized combination of name, organization, and interval.
-
-No producer burden and it works for a first-time source. But it fails exactly where the industry is dense: two people with the same name in one organization, and someone whose organization is the thing that just changed. Cross-organization identity — which the overlay depends on — is where it is weakest.
-
-### C. Probabilistic resolution with explicit uncertainty
-
-Score candidate matches on name, organization, function, interval adjacency, and corroborating sources. High confidence merges, mid confidence produces a linked-but-unmerged state, low confidence creates a distinct person.
-
-Fits the model already chosen, where conflict is a first-class state rather than a failure. Handles nicknames and career moves. Costs a scoring model, a review path, and a product answer for how an unresolved person appears in a chart.
-
-### D. Hybrid
-
-Use producer identifiers when present as strong evidence, fall back to probabilistic resolution, and never auto-merge across producers below a confidence threshold.
-
-Probably where this lands, but it needs the threshold policy, the unresolved-state semantics, and the merge and unmerge story written down before it means anything.
+**A public profile URL as the primary key** was rejected as an identifier while retained as evidence. Used as a key it would build a global person index inside a third-party namespace, with the terms-of-use and durability exposure that implies. Used as one weighted signal it is simply a public professional fact, which is what the map is made of.
 
 ## Decision
 
-Not yet made.
+**The internal UID is the only durable person identifier.** We assign it. Producer references and public profile URLs are **evidence, never authority**.
 
-To accept this ADR, answer: what producers are required to send, what evidence is scored, what happens at each confidence band, whether a merge can be undone, and how an unresolved person is displayed.
+**A Person is a derived cluster of claims**, not an asserted record. Clustering is a versioned projection over immutable claims, which makes a merge non-destructive by construction: unmerging is a re-projection rather than a repair, and improving the matcher re-derives identity retroactively without touching a single claim.
+
+**Resolution is probabilistic and permanent**, not a stopgap. Evidence includes name forms and known-as variants, organization, interval adjacency, affiliation sequence, public profile URL, corroboration count, and source-type weight.
+
+**Confidence bands are per-surface, not global.** The bar rises with the cost of being wrong. Grouping someone on an org chart may proceed on weaker evidence than asserting a career move, which in turn is weaker than presenting a warm path to a named human. Warm paths never render on an auto-merge below the highest band.
+
+**Human claims are first-class, high-weight identity evidence.** A viewer correcting an org chart and a user claiming themselves both emit ordinary claims through the normal pipeline ([ingest.md](../architecture/ingest.md)) with their own source types. Self-assertion is the strongest available signal for *identity*; it is not automatically the strongest for *title*, since people describe their own roles generously.
+
+**Unresolved is a displayable state.** A person we cannot confidently place appears as such rather than being silently merged or silently dropped.
+
+What a user account may bind to and what that entitles them to is a separate decision — [ADR-0011](0011-account-to-person-binding.md).
 
 ## Consequences
 
-Until this is accepted:
-
-- Identity columns in [contracts/claim-schema.md](../contracts/claim-schema.md) are marked blocked and must not be treated as final.
-- No merge logic is implemented.
-- Any interim matching used for exploration is disposable and must not create durable person records.
+- Identity is explainable in the same way function and seniority are: we can show which claims formed a person and why.
+- A wrong merge is cheap to fix and a better matcher improves history retroactively, so early imperfection is not permanent damage.
+- The claim contract can be finalized: producers send their own references and whatever public professional evidence they have, and never an identity verdict.
+- The matcher, a review path, and per-surface band policy all have to be built. This is real work that a deterministic key would have avoided.
+- Third-party corrections are an abuse surface — a vendor could edit a rival's chart. Corrections carry attribution, and handling is tracked as Q-08 in [../open-questions.md](../open-questions.md).
+- **The human loop cannot be the launch plan.** It needs users, users need a credible chart, and a credible chart needs decent unassisted resolution first. Seed quality still has to stand on its own ([ADR-0005](0005-org-chart-is-the-product.md)); corrections compound it rather than rescue it.
+- Perfect global deduplication remains explicitly out of scope. The map tolerates stated ambiguity.
 
 ## Affects
 
 - [contracts/claim-schema.md](../contracts/claim-schema.md)
 - [architecture/ingest.md](../architecture/ingest.md)
+- [glossary.md](../glossary.md)
 
 ## Source
 
-Discussion, 2026-08-29 — identified as the gap the ontology drafts correctly did not fill
+Discussion, 2026-08-29

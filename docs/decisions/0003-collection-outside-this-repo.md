@@ -27,6 +27,14 @@ The boundary is a **batch CSV claim contract**, specified here in [contracts/cla
 
 This repository owns the contract, the ingest pipeline, the graph, and the product.
 
+## Clarification, 2026-08-29
+
+This decision is about **collecting from third-party sources**. It does not prohibit the product from accepting claims that its own users submit.
+
+An in-product affordance to correct an org chart, or to claim yourself and supply your own history, is a product surface whose output happens to be a claim ([ADR-0010](0010-person-identity-without-pii.md)). Such claims enter through the same pipeline with their own source types. What stays out of this repository is machinery that goes and gets data: scrapers, crawlers, research desks, and editorial pipelines.
+
+Scope clarification only. The decision is unchanged.
+
 ## Consequences
 
 - Producers ship independently. A new source is a new file, not a new subsystem here.

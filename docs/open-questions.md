@@ -7,7 +7,7 @@ updated: 2026-08-29
 
 Unresolved items that are **not binding on anything**. They exist so that uncertainty is recorded rather than silently resolved by whoever writes code first.
 
-Bigger unresolved things — data model, claim contract, product boundary, stack — are ADRs instead. Two are open now: [ADR-0009](decisions/0009-stack-and-datastore.md) and [ADR-0010](decisions/0010-person-identity-without-pii.md).
+Bigger unresolved things — data model, claim contract, product boundary, stack — are ADRs instead. Two are open now: [ADR-0009](decisions/0009-stack-and-datastore.md) and [ADR-0011](decisions/0011-account-to-person-binding.md).
 
 Promote an item here to an ADR when it grows teeth. Delete it when it is answered, with the answer landing in a canonical doc or an ADR.
 
@@ -67,3 +67,14 @@ Cardinality and orientation. Orientation must be picked once and held product-wi
 
 *Forces an answer:* the first org chart surface.
 *Touches:* [product/vision.md](product/vision.md), [architecture/ontology-core.md](architecture/ontology-core.md)
+
+### Q-08 — How are third-party corrections protected from abuse?
+
+[ADR-0010](decisions/0010-person-identity-without-pii.md) makes user corrections high-weight claims, which creates an incentive to misuse them — a vendor could quietly edit a rival's chart, or someone could inflate a colleague's seniority.
+
+Corrections are attributed, so the raw material for handling this exists. What is unresolved is whether weight varies by contributor history, whether a correction against a well-sourced claim needs corroboration before it wins, and what visible state a disputed fact has.
+
+Related but distinct from [ADR-0011](decisions/0011-account-to-person-binding.md), which covers claims about *yourself*.
+
+*Forces an answer:* the first in-product correction affordance.
+*Touches:* [architecture/ingest.md](architecture/ingest.md)

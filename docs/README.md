@@ -98,6 +98,24 @@ Edit the canonical doc, bump `updated`. If you find yourself adding a *rule* rat
 
 ---
 
+## Keeping decisions binding without making them a straitjacket
+
+A decision system fails in two opposite ways. If decisions can be ignored, the documents rot and nobody trusts them. If decisions cannot be changed, they force bad implementations and people route around them silently — which is the same rot, arriving later.
+
+The rule that avoids both: **ADRs are non-bypassable, not immovable.**
+
+You may not quietly build something that contradicts an accepted ADR. You may absolutely change the ADR — and contact with real code is the most legitimate reason there is. Discovering during implementation that a decision was wrong is the system working, not a failure. Stop, supersede it, say what the implementation revealed, and continue. Superseding carries no stigma and needs no ceremony beyond a new file and an index row.
+
+Three habits keep this from becoming heavy:
+
+**Decide the boundary, not the interior.** An ADR should record the constraint and the reason, and leave method open. "Function and seniority are derived after resolve" is a boundary. "Use this regex table to classify titles" is interior, and does not belong in an ADR — it belongs in code, where it can change without a decision record. When in doubt, write down what must not happen and why, then let the implementer choose how.
+
+**Only ADR what is expensive to reverse.** If a choice can be changed in an afternoon, just make it. Ceremony over cheap decisions is what makes the system feel obstructive, and it buries the decisions that actually matter.
+
+**Record the expiry when you know it.** Some decisions are right for now and known to need revisiting later. Put `revisit_when` in the frontmatter and name the trigger — a scale threshold, a feature going live, a data volume. It stops a temporary decision from silently hardening into permanent architecture.
+
+If an ADR is blocking the obviously right solution, that is a signal to re-open it, not to work around it.
+
 ## Writing rules
 
 - **One place per fact.** Link rather than restate. Duplication is how these documents rot.

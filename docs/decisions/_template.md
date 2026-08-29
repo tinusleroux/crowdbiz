@@ -5,6 +5,7 @@ status: Open | Accepted | Superseded
 date: YYYY-MM-DD
 supersedes: null
 superseded_by: null
+revisit_when: null   # optional: the trigger that should reopen this
 ---
 
 # ADR-NNNN — Title
@@ -26,6 +27,8 @@ Only for `Open` ADRs, or where the rejected paths are instructive. Each option g
 ## Decision
 
 One paragraph, stated plainly and in the present tense. What we do, and where the boundary sits.
+
+Decide the boundary, not the interior: record the constraint and the reason, and leave method to the implementer. If this paragraph is prescribing *how* rather than *what must hold*, it is too specific.
 
 ## Consequences
 

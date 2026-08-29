@@ -16,6 +16,8 @@ When sources disagree, higher wins:
 
 A canonical doc that contradicts an accepted ADR is wrong. Fix the doc.
 
+ADRs are **non-bypassable, not immovable**. Never build quietly against one; if implementation shows a decision is wrong, stop and supersede it.
+
 ## Guardrails
 
 Settled. Do not relitigate inside a feature — open an ADR instead.

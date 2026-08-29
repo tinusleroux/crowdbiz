@@ -65,7 +65,19 @@ Route by consequence:
 - Changes the **data model**, the **claim contract**, the **product boundary**, or the **stack** → write an ADR in [docs/decisions/](docs/decisions/) using [_template.md](docs/decisions/_template.md), and add it to the index.
 - Anything smaller and still unresolved → add it to [docs/open-questions.md](docs/open-questions.md). Promote it to an ADR if it grows teeth.
 
+Only ADR what is expensive to reverse. If a choice can be undone in an afternoon, just make it.
+
 Never encode an undecided thing as a silent default in code or docs. If you must proceed, say so in the open-questions register.
+
+## When a decision is in your way
+
+**ADRs are non-bypassable, not immovable.**
+
+Do not quietly implement something that contradicts an accepted ADR, and do not contort a design to satisfy a decision that implementation has shown to be wrong. Both are failures.
+
+If building reveals that an ADR is wrong, stop and say so. Superseding it is normal — contact with real code is the best reason to change a decision, and it carries no stigma. Write the new ADR, note what the implementation revealed, mark the old one `Superseded`, and carry on.
+
+If an ADR is blocking the obviously right solution, raise it. Do not route around it.
 
 ---
 

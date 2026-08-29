@@ -1,7 +1,7 @@
 ---
 status: canonical
 updated: 2026-08-29
-decided_by: [0001, 0002, 0006, 0007, 0008]
+decided_by: [0001, 0002, 0006, 0007, 0008, 0010]
 ---
 
 # Glossary
@@ -12,7 +12,7 @@ The vocabulary is exact. Code, schemas, and documents use these words with these
 
 ## Objects
 
-**Person** — a durable human identity. Established without contact data ([ADR-0004](decisions/0004-no-pii.md)); how, is open ([ADR-0010](decisions/0010-person-identity-without-pii.md)).
+**Person** — a durable human identity, keyed by an internal UID we assign. Technically a **derived cluster** of claims rather than an asserted record, so identity is re-derivable and merges are non-destructive ([ADR-0010](decisions/0010-person-identity-without-pii.md)). Established without contact data ([ADR-0004](decisions/0004-no-pii.md)).
 
 **Organization** — a durable collective: team, venue, vendor, agency, sponsor, league, or association.
 
@@ -48,7 +48,15 @@ The vocabulary is exact. Code, schemas, and documents use these words with these
 
 **provenance** — source, source type, and observation date attached to a claim. The basis for answering "how do we know this?"
 
-**resolve** — the ingest stage that reconciles a new claim against existing ones: corroborate, refine, supersede, or conflict.
+**resolve** — the ingest stage that reconciles a new claim against existing ones: corroborate, refine, supersede, or conflict. Also where person clustering happens.
+
+**identity evidence** — anything that raises or lowers confidence that two claims describe the same human: name forms, organization, interval adjacency, affiliation sequence, public profile URL, corroboration, source type. Evidence is weighted; it is never authority.
+
+**confidence band** — the threshold a resolution must clear for a given surface. Per-surface, not global: a warm path to a named human demands more than grouping someone on a chart.
+
+**self-assertion** — a claim someone makes about themselves. The strongest identity evidence available, and not automatically the strongest evidence about their title. What an account may bind to is open ([ADR-0011](decisions/0011-account-to-person-binding.md)).
+
+**user correction** — a claim submitted by a viewer fixing something on a chart. An ordinary attributed claim, not a privileged edit.
 
 **interpret** — the ingest stage that derives function and seniority from a resolved affiliation.
 
@@ -64,7 +72,7 @@ The vocabulary is exact. Code, schemas, and documents use these words with these
 
 **warm path** — a route through the overlay to someone the viewer does not know directly.
 
-**producer** — anything that emits claims: the seeding project, a corrections process, a future news extractor. All live outside this repository ([ADR-0003](decisions/0003-collection-outside-this-repo.md)).
+**producer** — anything that emits claims: the seeding project, a news extractor, or the product's own users submitting corrections and self-assertions. Collection from third-party sources lives outside this repository; user-submitted claims are a product surface ([ADR-0003](decisions/0003-collection-outside-this-repo.md)).
 
 ---
 
