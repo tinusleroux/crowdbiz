@@ -1,0 +1,30 @@
+---
+description: Ontology naming discipline for graph model work
+globs: docs/architecture/**,docs/contracts/**,src/**,lib/**,app/**,packages/**
+alwaysApply: false
+---
+
+Definitions live in [docs/glossary.md](mdc:docs/glossary.md); the model is in [ontology-core.md](mdc:docs/architecture/ontology-core.md).
+
+## Nouns
+
+**Person**, **Organization**, **Affiliation**, **Relationship**. These four only.
+
+`REPORTS_TO` connects affiliations, not people.
+
+## Banned as entities, tables, types, or fields
+
+`Role`, `Job`, `Seat`, `Department`, `Employee`, and anything resembling a contact channel.
+
+Use `Affiliation` for participation and `function` for department-like grouping. Vacancies and departments are projections, not objects ([ADR-0006](mdc:docs/decisions/0006-no-role-seat-department-entities.md)).
+
+"Position" and "seat" are acceptable in prose and UI copy, never in schema.
+
+## Keep these four distinct
+
+- `Affiliation.type` — *how* someone participates
+- raw title — what the source said, never overwritten
+- `function` — *which domain* of work, derived
+- `seniority` — *how senior*, derived, for layout and comparison
+
+`function` and `seniority` are derived after resolve and must never be accepted from a producer ([ADR-0002](mdc:docs/decisions/0002-claims-before-interpretation.md)).

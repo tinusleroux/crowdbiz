@@ -1,0 +1,34 @@
+---
+description: How to edit documents and record decisions
+globs: docs/**/*.md
+alwaysApply: false
+---
+
+Process lives in [docs/README.md](mdc:docs/README.md).
+
+## Frontmatter
+
+Every doc needs it. Bump `updated` when substance changes.
+
+```yaml
+---
+status: canonical | draft | archived
+updated: YYYY-MM-DD
+decided_by: [0001, 0002]   # canonical docs only
+---
+```
+
+## Routing
+
+- Changes the **data model**, **claim contract**, **product boundary**, or **stack** → an ADR in `docs/decisions/`, using [_template.md](mdc:docs/decisions/_template.md), plus a row in [the index](mdc:docs/decisions/README.md)
+- Anything smaller and unresolved → a `Q-NN` entry in [open-questions.md](mdc:docs/open-questions.md)
+
+Never encode an undecided thing as a silent default.
+
+## Rules
+
+- Canonical docs explain ADRs. They do not invent binding rules.
+- Reversing a decision means a new ADR that supersedes the old one. Never rewrite an accepted ADR to mean something else.
+- Update affected canonical docs in the same change as the ADR.
+- One place per fact — link rather than restate.
+- **`docs/brainstorm/` is read-only.** Do not edit, tidy, or reconcile it.

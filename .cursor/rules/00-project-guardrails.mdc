@@ -1,0 +1,31 @@
+---
+description: CrowdBiz Graph authority model and non-negotiable guardrails
+alwaysApply: true
+---
+
+Read [AGENTS.md](mdc:AGENTS.md) before working in this repo.
+
+## Authority order
+
+When sources disagree, higher wins:
+
+1. Accepted ADRs in `docs/decisions/` — binding, latest accepted wins
+2. Canonical docs — `docs/product/`, `docs/architecture/`, `docs/contracts/`
+3. `docs/open-questions.md` — not binding
+4. `docs/brainstorm/` — frozen history, never truth
+
+A canonical doc that contradicts an accepted ADR is wrong. Fix the doc.
+
+## Guardrails
+
+Settled. Do not relitigate inside a feature — open an ADR instead.
+
+- **No PII.** No email, phone, or contact channel, not even for matching. ([ADR-0004](mdc:docs/decisions/0004-no-pii.md))
+- **Claims in, ontology after.** Producers assert sourced facts; `function` and `seniority` are derived here after resolve. ([ADR-0002](mdc:docs/decisions/0002-claims-before-interpretation.md))
+- **No collectors here.** No scrapers or crawlers. The boundary is a batch CSV claim contract. ([ADR-0003](mdc:docs/decisions/0003-collection-outside-this-repo.md))
+- **No `Role`, `Job`, `Seat`, or `Department` entities.** ([ADR-0006](mdc:docs/decisions/0006-no-role-seat-department-entities.md))
+- **`KNOWS` never defines org structure.** ([ADR-0008](mdc:docs/decisions/0008-knows-overlay-separate.md))
+
+## Current state
+
+Documentation only. No stack chosen — do not add schemas, migrations, or dependencies until [ADR-0009](mdc:docs/decisions/0009-stack-and-datastore.md) is accepted.
