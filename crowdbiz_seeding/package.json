@@ -13,7 +13,11 @@
     "db:seed": "tsx src/scripts/seed-packers.ts",
     "db:seed:leagues": "tsx src/scripts/seed-leagues.ts",
     "enqueue": "tsx src/scripts/enqueue-runs.ts",
-    "replay": "tsx src/scripts/replay-dataset.ts"
+    "replay": "tsx src/scripts/replay-dataset.ts",
+    "reemit": "tsx src/scripts/reemit-run.ts",
+    "backfill:about": "tsx src/scripts/backfill-profile-about.ts",
+    "graph:import-fixture": "tsx src/scripts/import-fixture.ts",
+    "graph:import": "tsx src/scripts/import-batch-dir.ts"
   },
   "dependencies": {
     "apify-client": "^2.25.0",
@@ -22,7 +26,8 @@
     "next": "16.3.3",
     "postgres": "^3.4.9",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "yaml": "^2.8.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

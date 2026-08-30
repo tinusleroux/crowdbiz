@@ -9,10 +9,12 @@ describe("vanityFromProfileItem", () => {
         publicIdentifier: "samnewton31",
         linkedinUrl: "https://www.linkedin.com/in/samnewton31?trk=profile",
         originalQuery: { profileId: "ACwAAAInputId" },
+        about: "I build ticketing systems for live events.",
       }),
     ).toEqual({
       opaqueId: "ACwAAAInputId",
       vanityUrl: "https://www.linkedin.com/in/samnewton31",
+      profileAbout: "I build ticketing systems for live events.",
     });
   });
 
@@ -26,6 +28,7 @@ describe("vanityFromProfileItem", () => {
     ).toEqual({
       opaqueId: "ACwAAAInputId",
       vanityUrl: null,
+      profileAbout: null,
     });
   });
 });

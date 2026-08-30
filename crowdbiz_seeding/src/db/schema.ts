@@ -66,6 +66,8 @@ export const rawProfiles = pgTable(
     startMonth: integer("start_month"),
     memberUrl: text("member_url"),
     datasetItemId: text("dataset_item_id"),
+    /** Public LinkedIn About text, fetched during keeper profile enrichment. */
+    profileAbout: text("profile_about"),
     payload: jsonb("payload").notNull().$type<Record<string, unknown>>(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
@@ -91,6 +93,59 @@ export const curatedProfiles = pgTable("curated_profiles", {
   startDate: text("start_date"),
   affiliationType: text("affiliation_type").notNull().default("employed"),
   createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+/** Derived graph — rebuilt from claim batches, not producer tables. */
+export const graphOrganizations = pgTable("graph_organizations", {
+  orgId: text("org_id").primaryKey(),
+  name: text("name").notNull(),
+  orgType: text("org_type").notNull(),
+  website: text("website"),
+  sourceBatchId: text("source_batch_id"),
+});
+
+export const graphPersons = pgTable("graph_persons", {
+  personId: text("person_id").primaryKey(),
+  fullName: text("full_name").notNull(),
+  publicProfileUrl: text("public_profile_url"),
+});
+
+export const graphAffiliations = pgTable("graph_affiliations", {
+  affiliationId: text("affiliation_id").primaryKey(),
+  personId: text("person_id")
+    .notNull()
+    .references(() => graphPersons.personId),
+  orgId: text("org_id")
+    .notNull()
+    .references(() => graphOrganizations.orgId),
+  affiliationType: text("affiliation_type").notNull(),
+  rawTitle: text("raw_title").notNull(),
+  startDate: text("start_date"),
+  asOf: text("as_of").notNull(),
+  functionSlug: text("function_slug").notNull(),
+  senioritySlug: text("seniority_slug").notNull(),
+  inChart: boolean("in_chart").notNull(),
+});
+
+/**
+ * Human function decisions. Upserted by affiliation claim id. Not a claim
+ * column, and not FK'd to graph_affiliations — reimport deletes those rows.
+ */
+export const graphFunctionReviews = pgTable("graph_function_reviews", {
+  affiliationId: text("affiliation_id").primaryKey(),
+  orgId: text("org_id").notNull(),
+  personId: text("person_id").notNull(),
+  rawTitle: text("raw_title").notNull(),
+  decision: text("decision").notNull(),
+  functionSlug: text("function_slug"),
+  reviewer: text("reviewer").notNull(),
+  rationale: text("rationale"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
 });

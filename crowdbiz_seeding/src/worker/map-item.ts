@@ -83,6 +83,7 @@ function opaqueFromUrl(url: string | null): string | null {
 export function vanityFromProfileItem(item: Record<string, unknown>): {
   opaqueId: string | null;
   vanityUrl: string | null;
+  profileAbout: string | null;
 } {
   const originalQuery =
     item.originalQuery &&
@@ -104,5 +105,5 @@ export function vanityFromProfileItem(item: Record<string, unknown>): {
     str(item.linkedinId) ??
     str(item.profileId) ??
     opaqueFromUrl(url);
-  return { opaqueId, vanityUrl };
+  return { opaqueId, vanityUrl, profileAbout: str(item.about) };
 }

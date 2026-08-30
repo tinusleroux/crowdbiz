@@ -26,8 +26,8 @@
 #   Software vendor (29)              51.7% -> 100.0%
 
 version: 2
-status: draft
-updated: 2026-08-29
+status: accepted
+updated: 2026-08-30
 supersedes: functions.v1.yaml
 
 functions:
@@ -41,8 +41,11 @@ functions:
     boundary: >
       Selling to organizations, not to fans. Selling seats to a company is
       ticketing; selling a company signage and rights is partnerships.
-      Winning the account is partnerships; keeping and servicing it afterwards
-      is client_success.
+      Side of the sale, not the word "account": a club "Account Executive"
+      selling sponsorship or rights is partnerships; an "Account Manager" or
+      customer-success role after the sale is client_success. Winning the
+      account is partnerships; keeping and servicing it afterwards is
+      client_success.
     changed_in_v2: >
       Widened from sponsorship to business-to-business selling generally, so a
       vendor's "Regional Sales Manager" has a home. The slug is unchanged
@@ -56,10 +59,10 @@ functions:
       Keeping and growing a named commercial account after it is won — account
       management, customer and technical success, advocacy, and renewals.
     boundary: >
-      Distinguished from partnerships by which side of the sale it sits on.
-      Introduced because "Account Manager" and "Account Service Coordinator"
-      previously matched finance on the word "account", which put sales and
-      service staff in the finance column at both a vendor and a club.
+      Distinguished from partnerships by which side of the sale it sits on, not
+      by the word "account". A club "Account Executive" selling sponsorship or
+      rights is partnerships; "Account Manager", "Account Service Coordinator",
+      and customer-success roles after the sale are client_success.
       Fan-facing season-ticket service remains ticketing; this is for accounts
       held by an organization.
 
@@ -144,6 +147,9 @@ functions:
     definition: >
       Reputation and external relations — public relations, media relations,
       press operations, public affairs, and government relations.
+    boundary: >
+      Earned and reputational work, not paid campaigns. The message and the
+      campaign are marketing; making the assets is content_media.
 
   - slug: community
     label: Community and Foundation
@@ -222,9 +228,11 @@ functions:
       Accounting, financial planning and control, payroll, treasury, audit,
       procurement, and risk and insurance.
     boundary: >
-      "Account" is not a finance word on its own. An account manager, account
-      executive, or account service coordinator sells or services a customer
-      relationship and belongs to client_success. Finance keeps the books.
+      "Account" is not a finance word on its own, and it does not all route to
+      client_success. Side of the sale: an "Account Executive" winning
+      sponsorship, rights, or other B2B business is partnerships; an "Account
+      Manager" or customer-success role after the sale is client_success.
+      Finance keeps the books.
 
   - slug: legal
     label: Legal and Compliance
@@ -280,14 +288,29 @@ functions:
       "Director of Family Engagement" is community, while "Director of Player
       Development/Engagement" is on_field.
 
+  - slug: ownership
+    label: Ownership and Board
+    scope: out
+    definition: >
+      Equity in the organization and seats that govern it — owner, co-owner,
+      part owner, owner-operator, and board members.
+    boundary: >
+      Classified like any other function and excluded by the employed org
+      chart afterwards; never rejected at ingest. Affiliation type remains
+      board or ownership on the claim. This is not a crowd-business department.
+      "Product Owner" is product. A vendor partner or commercial Partner title
+      is not this function. A generic "Board of Advisors" without "board member"
+      stays unknown. Honorary and minority owners at publicly-owned clubs are
+      dropped at curation as association, not classified here.
+
   - slug: unknown
     label: Unknown
     scope: unresolved
     definition: >
       The title is real but its function cannot be determined with confidence,
       or it sits on the scope boundary — alumni-facing work, "Director of
-      Video", "Director of Operations", "Assistant General Manager", or a bare
-      rank such as "Vice President" or "Analyst" with no domain attached.
+      Video", "Director of Operations", or a bare rank such as "Vice President"
+      or "Analyst" with no domain attached.
     boundary: >
       An honest answer, not a failure state. Preferred over a confident wrong
       function wherever oversight or domain is unclear. Roughly 5% of a curated

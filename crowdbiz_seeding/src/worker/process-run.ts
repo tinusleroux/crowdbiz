@@ -104,7 +104,7 @@ export async function processRun(runId: string): Promise<void> {
 
   const fresh = await reload(runId);
   if (fresh.status === "collecting") {
-    await curateRun(runId, org.displayName);
+    await curateRun(runId, org.displayName, org.excludeOwnership);
     await setStatus(runId, "enriching");
   }
 
@@ -157,7 +157,19 @@ async function persistRaw(runId: string, datasetId: string) {
     .where(eq(scrapeRuns.id, runId));
 }
 
-async function curateRun(runId: string, orgName: string) {
+async function curateRun(
+  runId: string,
+  orgName: string,
+  excludeOwnership: boolean,
+) {
+  const priorVanity = new Map(
+    (
+      await db()
+        .select()
+        .from(curatedProfiles)
+        .where(eq(curatedProfiles.scrapeRunId, runId))
+    ).map((c) => [c.rawProfileId, c.vanityUrl]),
+  );
   await db().delete(curatedProfiles).where(eq(curatedProfiles.scrapeRunId, runId));
   const raws = await db()
     .select()
@@ -167,7 +179,7 @@ async function curateRun(runId: string, orgName: string) {
     const fullName = stripCredentialsFromName(raw.firstName, raw.lastName);
     const decision = !fullName
       ? ({ keep: false, dropReason: "other" } as const)
-      : curateTitle(raw.title, raw.company, orgName);
+      : curateTitle(raw.title, raw.company, orgName, excludeOwnership);
     await db()
       .insert(curatedProfiles)
       .values({
@@ -178,9 +190,9 @@ async function curateRun(runId: string, orgName: string) {
         fullName: fullName || "(unnamed)",
         rawTitle: raw.title ?? "",
         personRef: `linkedin:${raw.opaqueId}`,
-        vanityUrl: null,
+        vanityUrl: priorVanity.get(raw.id) ?? null,
         startDate: formatStartDate(raw.startYear, raw.startMonth),
-        affiliationType: "employed",
+        affiliationType: decision.keep ? decision.affiliationType : "employed",
       });
   }
 }
@@ -220,7 +232,7 @@ async function enrichVanity(runId: string, cap: number | null) {
   await applyVanityItems(runId, items);
 }
 
-async function applyVanityItems(
+export async function applyVanityItems(
   runId: string,
   items: Record<string, unknown>[],
 ) {
@@ -235,20 +247,31 @@ async function applyVanityItems(
       .where(eq(curatedProfiles.scrapeRunId, runId))
   ).filter((row) => row.curated.outcome === "keep");
 
-  const byOpaque = new Map<string, string>();
+  const byOpaque = new Map<
+    string,
+    { vanityUrl: string | null; profileAbout: string | null }
+  >();
   for (const item of items) {
-    const { opaqueId, vanityUrl } = vanityFromProfileItem(item);
-    if (opaqueId && vanityUrl) byOpaque.set(opaqueId, vanityUrl);
+    const { opaqueId, vanityUrl, profileAbout } = vanityFromProfileItem(item);
+    if (opaqueId) byOpaque.set(opaqueId, { vanityUrl, profileAbout });
   }
   for (const row of keepRows) {
+    const enriched = byOpaque.get(row.raw.opaqueId);
     // Left null when neither enrichment nor the listing gave a real URL. An
     // opaque ID is not a vanity slug, and `/in/<opaqueId>` does not resolve.
-    const vanity = byOpaque.get(row.raw.opaqueId) ?? row.raw.memberUrl ?? null;
-    if (!vanity) continue;
-    await db()
-      .update(curatedProfiles)
-      .set({ vanityUrl: vanity })
-      .where(eq(curatedProfiles.id, row.curated.id));
+    const vanity = enriched?.vanityUrl ?? row.raw.memberUrl ?? null;
+    if (vanity) {
+      await db()
+        .update(curatedProfiles)
+        .set({ vanityUrl: vanity })
+        .where(eq(curatedProfiles.id, row.curated.id));
+    }
+    if (enriched?.profileAbout) {
+      await db()
+        .update(rawProfiles)
+        .set({ profileAbout: enriched.profileAbout })
+        .where(eq(rawProfiles.id, row.raw.id));
+    }
   }
   return {
     updated: keepRows.filter((row) => byOpaque.has(row.raw.opaqueId)).length,
@@ -306,6 +329,7 @@ async function emitRun(runId: string, org: typeof organizations.$inferSelect) {
       profileUrl: k.vanityUrl,
       startDate: k.startDate,
       personRef: k.personRef,
+      affiliationType: k.affiliationType,
     })),
   });
 
@@ -357,6 +381,32 @@ async function reload(runId: string) {
     .where(eq(scrapeRuns.id, runId));
   if (!run) throw new Error(`Run ${runId} vanished`);
   return run;
+}
+
+/**
+ * Re-derive a batch from stored raw rows after a curation change. Re-scraping
+ * costs money; re-curating is free, so improved rules never need a new run.
+ */
+export async function recurateAndEmit(runId: string) {
+  const run = await reload(runId);
+  const [org] = await db()
+    .select()
+    .from(organizations)
+    .where(eq(organizations.orgRef, run.orgRef));
+  if (!org) throw new Error(`Organization ${run.orgRef} not found`);
+
+  await curateRun(runId, org.displayName, org.excludeOwnership);
+  await emitRun(runId, org);
+
+  const curated = await db()
+    .select()
+    .from(curatedProfiles)
+    .where(eq(curatedProfiles.scrapeRunId, runId));
+  return {
+    runId,
+    kept: curated.filter((c) => c.outcome === "keep").length,
+    dropped: curated.filter((c) => c.outcome === "drop").length,
+  };
 }
 
 /** Persist raw from an existing Apify dataset (pilot replay). */

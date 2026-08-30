@@ -1,17 +1,19 @@
 # CrowdBiz seniority scale
 #
 # An ordered scale for stacking affiliations, driving layout, and comparing
-# rank across organizations (ontology-title.md, ADR-0014).
+# rank across organizations.
 #
 # Orientation: LOWER rank is MORE senior. Leaders sit at the centre or top.
 #
 # The slug is the stable reference. `rank` is ordering only — compare it,
 # do not do arithmetic on it or persist it as the identifier, so that a band
 # can be inserted later without rewriting stored structure.
+#
+# Do not infer seniority from function.
 
 version: 1
-status: draft
-updated: 2026-08-29
+status: accepted
+updated: 2026-08-30
 orientation: lower_is_more_senior
 
 bands:
@@ -20,13 +22,19 @@ bands:
     label: Chief
     typical: Chief executive, president, owner-operator, C-suite
     note: >
-      A C-level title sets this band but does not set function — that resolves
-      by what the person oversees.
+      Org-wide apex only — CEO, president of the organization, owner-operator,
+      or C-suite of the whole org. "President of <domain>" (for example
+      President of Ticketing) is not chief; it lands on the band the rest of
+      the title indicates. A C-level title sets this band but does not set
+      function — that resolves by what the person oversees.
 
   - rank: 2
-    slug: executive
-    label: Executive
+    slug: vice_president
+    label: Vice President
     typical: Executive vice president, senior vice president, vice president
+    note: >
+      Slug is vice_president so it does not collide with function slug
+      executive. EVP/SVP vs VP may split later; one band for now.
 
   - rank: 3
     slug: senior_leader
@@ -75,10 +83,13 @@ bands:
       Partnerships", "Buffalo Bills Ticket Office" — carries no rank. Unknown
       is correct; do not infer a band from function alone.
 
-# Modifiers adjust a band. They never create one and never multiply functions.
+# Modifiers adjust a band only. They never create one, never invent a band from
+# function, and never multiply functions. `executive` and `chief` are not
+# modifiers: they belong to band logic (vice_president / chief), and treating
+# them as senior-delta breaks titles such as Executive Assistant.
 modifiers:
   senior:
-    terms: [senior, sr, executive, principal, head, chief]
+    terms: [senior, sr, principal]
     delta: -1
   junior:
     terms: [assistant, associate, deputy, junior, jr]
@@ -87,7 +98,7 @@ modifiers:
 # Worked examples, verified against the derivation corpus.
 examples:
   - { title: "Chief Financial Officer",            band: chief }
-  - { title: "Vice President of Communications",   band: executive }
+  - { title: "Vice President of Communications",   band: vice_president }
   - { title: "General Counsel",                    band: senior_leader }
   - { title: "Director of Retail",                 band: leader }
   - { title: "Assistant Director of Communications", band: associate_leader }

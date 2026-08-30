@@ -37,4 +37,13 @@ pnpm replay
 - `harvestapi/linkedin-company-employees` — `Short ($4 per 1k)` only
 - `harvestapi/linkedin-profile-scraper` — `Profile details no email` only, keepers after curation
 
+The keeper profile pass also stores the public LinkedIn `about` text in
+`raw_profiles.profile_about`. It is review context only: it appears in the
+function-validation queue but is not emitted into claims or treated as graph
+truth. Existing vanity datasets can be replayed without a new Actor run:
+
+```bash
+pnpm backfill:about
+```
+
 `APIFY_TOKEN` never appears in the UI or exported CSVs.

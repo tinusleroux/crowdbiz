@@ -1,0 +1,2 @@
+claim_id,source_url,source_type,observed_at,org_ref,name,org_type,website
+crowdbiz-seed:fixture:org:nfl-green-bay-packers,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,nfl-green-bay-packers,Green Bay Packers,team,https://www.packers.com

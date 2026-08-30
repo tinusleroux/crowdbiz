@@ -15,6 +15,27 @@
       "when": 1756476000000,
       "tag": "0001_org_exclude_ownership",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1756508400000,
+      "tag": "0002_graph_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1756554000000,
+      "tag": "0003_function_reviews",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1788084900000,
+      "tag": "0004_profile_about",
+      "breakpoints": true
     }
   ]
 }

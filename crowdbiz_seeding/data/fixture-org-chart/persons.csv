@@ -1,0 +1,13 @@
+claim_id,source_url,source_type,observed_at,person_ref,full_name,public_profile_url,public_profile_id
+crowdbiz-seed:fixture:p1:person,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p1,Ed Policy,,
+crowdbiz-seed:fixture:p2:person,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p2,Alex Partnerships,,
+crowdbiz-seed:fixture:p3:person,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p3,Sam Accounts,,
+crowdbiz-seed:fixture:p4:person,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p4,Riley Retail,,
+crowdbiz-seed:fixture:p5:person,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p5,Jordan Tickets,,
+crowdbiz-seed:fixture:p6:person,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p6,Casey Comms,,
+crowdbiz-seed:fixture:p7:person,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p7,Morgan Counsel,,
+crowdbiz-seed:fixture:p8:person,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p8,Pat Assistant,,
+crowdbiz-seed:fixture:p9:person,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p9,Chris Ops,,
+crowdbiz-seed:fixture:p10:person,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p10,Lee Coach,,
+crowdbiz-seed:fixture:p11:person,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p11,Avery Partnerships,,
+crowdbiz-seed:fixture:p12:person,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p12,Quinn Seating,,

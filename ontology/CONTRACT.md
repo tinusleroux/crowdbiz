@@ -13,10 +13,10 @@ Function and seniority vocabularies are versioned, authored YAML under
 never appear on claims. Matching by rules, models, or review is not part of the
 ontology.
 
-The editable freeze candidates are:
+Vocabularies (both accepted):
 
-- [`functions.v2.yaml`](functions.v2.yaml) for functions
-- [`seniority.v1.yaml`](seniority.v1.yaml) for seniority
+- [`functions.v2.yaml`](functions.v2.yaml) — `version: 2`
+- [`seniority.v1.yaml`](seniority.v1.yaml) — `version: 1`
 
 ## 1. Object model
 
@@ -96,9 +96,21 @@ The closed affiliation type set is:
 accepted vocabularies. They never appear on the source claim. An uncertain
 interpretation uses `unknown` rather than a guess.
 
-`in_chart` is false when the assigned function has `scope: out`. It is true
-when the function has `scope: in` or the function is `unknown`, ensuring that
-unresolved affiliations remain visible.
+Competitive-sport work and in-game / TV / radio production crews are dropped
+at collection (`on_field` and `broadcast` in curation) and are not imported
+into the graph. Crowd-business titles that mention the sport (for example
+football communications or community outreach) and owned social / editorial
+work are kept. Function slugs remain in the vocabulary for anything that
+still reaches interpretation.
+
+`in_chart` requires both of the following:
+
+- the assigned function has `scope: in`, or the function is `unknown`, so that
+  unresolved affiliations remain visible rather than disappearing; and
+- `affiliation_type` is `employed`, so that board seats, ownership stakes, and
+  advisory relationships are stored and navigable without being drawn as
+  positions on an org chart. Titles such as Owner and Board Member interpret
+  to function `ownership` (`scope: out`) for the same reason.
 
 A person may have multiple affiliations. MVP charts show current affiliations
 for the opened organization.
@@ -122,7 +134,8 @@ The MVP graph does not contain:
 
 For one organization:
 
-1. Select its current `AFFILIATED_WITH` edges where `in_chart` is true.
+1. Select its current `AFFILIATED_WITH` edges where `in_chart` is true, which
+   restricts the chart to employed affiliations in an in-scope function.
 2. Group affiliations by `function`.
 3. Stack each group by seniority rank, with lower ranks displayed as more
    senior.
@@ -143,9 +156,9 @@ referenced by interpreted data must be deprecated rather than deleted.
 
 ### Function
 
-[`functions.v2.yaml`](functions.v2.yaml) is the editable freeze candidate and
-supersedes [`functions.v1.yaml`](functions.v1.yaml). Version 1 must not be used
-for interpretation.
+[`functions.v2.yaml`](functions.v2.yaml) is accepted and supersedes
+[`functions.v1.yaml`](functions.v1.yaml). Version 1 must not be used for
+interpretation.
 
 Each function defines:
 
@@ -162,7 +175,9 @@ not a category to eliminate by guessing.
 
 ### Seniority
 
-[`seniority.v1.yaml`](seniority.v1.yaml) is the editable freeze candidate.
+[`seniority.v1.yaml`](seniority.v1.yaml) is accepted. The rank-2 slug is
+`vice_president` (not `executive`) so it does not collide with the function
+slug `executive`.
 
 Each band defines:
 
@@ -258,6 +273,11 @@ validate batch
 
 Interpretation is replayable. A vocabulary or matching change re-runs
 interpretation and rebuilds derived fields without rewriting claims.
+
+How matching is allowed to change is [LEARNING.md](LEARNING.md): seed with the
+current rules, human-validate unknowns as overrides, and promote only repeated
+held-out patterns into rules. Human decisions survive reinterpretation.
+`unknown` remains a valid outcome.
 
 ## 8. Locked and deferred
 

@@ -1,0 +1,17 @@
+{
+  "producer": "crowdbiz-seed",
+  "batch_id": "fixture-org-chart",
+  "generated_at": "2026-08-30T00:00:00.000Z",
+  "org_scope": "nfl-green-bay-packers",
+  "collection": {
+    "method": "profile_scrape",
+    "collector": "fixture",
+    "run_id": "fixture",
+    "observed_at": "2026-08-30T00:00:00.000Z"
+  },
+  "counts": {
+    "collected": 12,
+    "emitted": 12,
+    "curated_out": 0
+  }
+}

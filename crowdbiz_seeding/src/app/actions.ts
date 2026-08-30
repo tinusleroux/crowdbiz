@@ -1,9 +1,12 @@
 "use server";
 
+import path from "node:path";
+import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/db";
-import { organizations, scrapeRuns } from "@/db/schema";
+import { batches, organizations, scrapeRuns } from "@/db/schema";
+import { importClaimBatch, reinterpretGraph } from "@/graph/import-batch";
 
 export async function createOrganization(formData: FormData) {
   const orgRef = String(formData.get("orgRef") ?? "").trim();
@@ -53,4 +56,36 @@ export async function startScrape(formData: FormData) {
   if (!run) throw new Error("Failed to enqueue scrape");
   revalidatePath("/orgs");
   redirect(`/runs/${run.id}`);
+}
+
+export async function importFixtureBatch() {
+  const dir = path.resolve(process.cwd(), "data/fixture-org-chart");
+  await importClaimBatch(dir);
+  revalidatePath("/chart", "layout");
+  revalidatePath("/review");
+  redirect("/chart/nfl-green-bay-packers");
+}
+
+export async function importEmittedBatch(formData: FormData) {
+  const batchId = String(formData.get("batchId") ?? "").trim();
+  if (!batchId) throw new Error("Select a batch");
+  const [batch] = await db()
+    .select()
+    .from(batches)
+    .where(eq(batches.batchId, batchId));
+  if (!batch?.validationOk) throw new Error("Batch is missing or invalid");
+  await importClaimBatch(path.resolve(batch.filesystemPath));
+  const orgId =
+    typeof batch.manifest.org_scope === "string"
+      ? batch.manifest.org_scope
+      : "";
+  revalidatePath("/chart", "layout");
+  revalidatePath("/review");
+  redirect(orgId ? `/chart/${orgId}` : "/chart");
+}
+
+export async function reinterpretAll() {
+  await reinterpretGraph();
+  revalidatePath("/chart", "layout");
+  revalidatePath("/review");
 }

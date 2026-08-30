@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { db } from "@/db";
 import { batches, scrapeRuns } from "@/db/schema";
 import { apifyConsoleRunUrl } from "@/lib/constants";
+import { importEmittedBatch } from "@/app/actions";
 
 export const dynamic = "force-dynamic";
 
@@ -105,6 +106,14 @@ export default async function RunDetailPage({
           <a className="underline" href={`/runs/${id}/download`}>
             Download batch zip
           </a>
+        )}
+        {batch?.validationOk && (
+          <form action={importEmittedBatch}>
+            <input type="hidden" name="batchId" value={batch.batchId} />
+            <button type="submit" className="underline">
+              Import to chart
+            </button>
+          </form>
         )}
       </div>
       {batch && (

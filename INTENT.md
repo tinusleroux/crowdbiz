@@ -30,9 +30,7 @@ Trust without contact data comes from provenance, recency, and corroboration —
 
 ## Where we are
 
-One producer lives in `crowdbiz_seeding/`. It collects public profile data one organization at a time and emits validated claim batches. Nothing consumes those batches yet: there is no claim importer, no resolve, no derived graph, no product surface.
-
-Function and seniority vocabularies live in `ontology/` as versioned YAML. They are data, not constants in code.
+One producer lives in `crowdbiz_seeding/`. It collects public profile data one organization at a time and emits validated claim batches. The same app can import a validated batch, interpret `raw_title` with the accepted YAML vocabularies, and draw an org chart (`/chart`). Producer tables remain collection state. The graph is rebuilt from claims. Unknowns after matching are for human validation, not for guessing slugs; see `ontology/LEARNING.md`.
 
 The claim shape is whatever `crowdbiz_seeding/src/emit/validate.ts` accepts. A batch that fails validation is never marked emitted.
 

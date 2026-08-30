@@ -34,13 +34,19 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <Link href="/orgs" className="hover:text-zinc-900">
                 Organizations
               </Link>
+              <Link href="/chart" className="hover:text-zinc-900">
+                Charts
+              </Link>
+              <Link href="/review" className="hover:text-zinc-900">
+                Review
+              </Link>
               <Link href="/runs/new" className="hover:text-zinc-900">
                 New scrape
               </Link>
             </nav>
           </div>
         </header>
-        <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
+        <main className="mx-auto w-full max-w-[90rem] px-4 py-8">{children}</main>
       </body>
     </html>
   );

@@ -1,0 +1,13 @@
+claim_id,source_url,source_type,observed_at,person_ref,org_ref,raw_title,affiliation_type,start_date,as_of
+crowdbiz-seed:fixture:p1,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p1,nfl-green-bay-packers,President and Chief Executive Officer,employed,,2026-08-30
+crowdbiz-seed:fixture:p2,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p2,nfl-green-bay-packers,Account Executive,employed,,2026-08-30
+crowdbiz-seed:fixture:p3,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p3,nfl-green-bay-packers,Account Manager,employed,,2026-08-30
+crowdbiz-seed:fixture:p4,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p4,nfl-green-bay-packers,Director of Retail,employed,,2026-08-30
+crowdbiz-seed:fixture:p5,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p5,nfl-green-bay-packers,President of Ticketing,employed,,2026-08-30
+crowdbiz-seed:fixture:p6,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p6,nfl-green-bay-packers,Vice President of Communications,employed,,2026-08-30
+crowdbiz-seed:fixture:p7,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p7,nfl-green-bay-packers,Associate General Counsel,employed,,2026-08-30
+crowdbiz-seed:fixture:p8,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p8,nfl-green-bay-packers,Executive Assistant,employed,,2026-08-30
+crowdbiz-seed:fixture:p9,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p9,nfl-green-bay-packers,Director of Operations,employed,,2026-08-30
+crowdbiz-seed:fixture:p10,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p10,nfl-green-bay-packers,Head Coach,employed,,2026-08-30
+crowdbiz-seed:fixture:p11,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p11,nfl-green-bay-packers,Corporate Partnerships,employed,,2026-08-30
+crowdbiz-seed:fixture:p12,https://www.linkedin.com/company/32984,profile_self_report,2026-08-30T00:00:00.000Z,linkedin:fixture-p12,nfl-green-bay-packers,Premium Seating Coordinator,employed,,2026-08-30

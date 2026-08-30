@@ -55,6 +55,15 @@ describe("Packers title fixtures", () => {
     "Senior Executive/Director of Pro Personnel",
     "Director of Football Administration/Player Finance",
     "Director of Football Logistics / Team Travel",
+    "Professional Athlete",
+    "Professional Baseball Player",
+    "Assistant General Manager",
+    "Assistant to the General Manager",
+    "Physical Therapist",
+    "NFL Cheerleader",
+    "Atlanta Falcons Cheerleader",
+    "NHL Goaltender",
+    "Hockey Analyst",
   ];
   const keepGrey = [
     "Assiatant Director of Players Engagement",
@@ -70,6 +79,22 @@ describe("Packers title fixtures", () => {
     "Accounting Manager",
     "Vice President of Communications",
     "Ticket office coordinator",
+    "Vice President of Football Communications",
+    "Social Media Coordinator",
+  ];
+  const dropBroadcast = [
+    "Camera Operator",
+    "Stage Manager",
+    "Director, Broadcast",
+    "Vice President, Broadcast",
+    "Director of Live Production and Broadcast",
+    "Director, Video Production",
+    "EVS Replay Operator",
+    "Radio Play-by-Play Announcer",
+    "Technical Director",
+    "Gameday Technical Director",
+    "Production Runner",
+    "Broadcaster",
   ];
   const dropNotTitle = ["Student", "", "Green Bay Packers"];
 
@@ -98,6 +123,14 @@ describe("Packers title fixtures", () => {
   for (const t of keepBusiness) {
     it(`keeps business: ${t}`, () => {
       expect(curateTitle(t, ORG, ORG).keep).toBe(true);
+    });
+  }
+
+  for (const t of dropBroadcast) {
+    it(`drops broadcast: ${t}`, () => {
+      const r = curateTitle(t, ORG, ORG);
+      expect(r.keep).toBe(false);
+      if (!r.keep) expect(r.dropReason).toBe("broadcast");
     });
   }
 

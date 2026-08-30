@@ -21,6 +21,8 @@ export type EmitPerson = {
   profileUrl: string | null;
   startDate: string | null;
   personRef: string;
+  /** Closed set from the claim contract; decided in curation. */
+  affiliationType: string;
 };
 
 export type EmitInput = {
@@ -125,7 +127,7 @@ export async function writeClaimBatch(input: EmitInput): Promise<EmitResult> {
       person_ref: p.personRef,
       org_ref: input.org.orgRef,
       raw_title: p.rawTitle,
-      affiliation_type: "employed",
+      affiliation_type: p.affiliationType,
       start_date: p.startDate ?? "",
       as_of: asOf,
     })),
